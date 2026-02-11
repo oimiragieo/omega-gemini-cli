@@ -1,0 +1,27 @@
+---
+description: When to use omega-gemini-cli (headless Gemini) and how to run it
+alwaysApply: true
+---
+
+# Omega Gemini CLI (headless)
+
+When the user wants to **use Gemini** for analysis, large files, sandbox execution, or brainstorming, use the **omega-gemini-cli** skill and run the **headless script** (no MCP).
+
+## When to use
+
+- User says "use Gemini", "ask Gemini", "analyze with Gemini", "run in Gemini sandbox", "brainstorm with Gemini", or similar.
+- Task benefits from Gemini's large context or a second model's perspective.
+
+## How to run Gemini
+
+From the project root (where `.claude` lives), run:
+
+```bash
+node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "PROMPT"
+```
+
+Optional: add `--model gemini-2.5-flash`, `--sandbox`, or `--json`. Build the prompt from the user's request and any @ file refs. Return the script's stdout as Gemini's response.
+
+## If Gemini CLI is not set up
+
+If the script fails (e.g. "gemini not found"), suggest the user run **/omega-gemini-setup** and complete Node + Gemini CLI install and one-time auth. See .claude/skills/omega-gemini-cli/references/installation.md and references/auth.md.

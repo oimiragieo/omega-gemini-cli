@@ -1,0 +1,14 @@
+node_modules/
+*.log
+.env
+.DS_Store
+*.swp
+*.swo
+.vscode/
+.idea/
+.npmignore
+CLAUDE.md
+
+# Lint / format
+.eslintcache
+.prettier-cache

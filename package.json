@@ -1,0 +1,19 @@
+{
+  "name": "omega-gemini-cli",
+  "version": "2.0.0",
+  "description": "Portable Agent Skill for headless Gemini CLI (Claude, Codex, Cursor, VS Code, Antigravity, Gemini CLI)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.15.0",
+    "eslint": "^9.15.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.3.3"
+  }
+}
