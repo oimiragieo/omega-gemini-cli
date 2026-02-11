@@ -17,13 +17,25 @@ All logic runs via **Node + Gemini CLI** (e.g. `gemini -p "..."`). No npm depend
 
 ## Quick start (in a new project)
 
-1. Copy the **entire** `.claude` folder into your project (so you have `.claude/skills/omega-gemini-cli/` and `.claude/commands/`).
-2. For **Codex** copy **.agents**; for **Antigravity** copy **.agent**; for **Gemini CLI** feedback/test copy **.gemini**; for **VS Code** tasks copy **.vscode**; optionally copy **.cursor/rules/** into your project’s `.cursor/rules/`.
-3. Open that project in Claude (or run `codex` from the project root) and run **/omega-gemini-setup** in Claude, or run `node .claude/skills/omega-gemini-cli/scripts/verify-setup.mjs` from the project root.
-4. Install **Node** and **Gemini CLI** if prompted; complete one-time auth (`gemini` in a terminal).
-5. In **Claude** say “ask gemini for feedback” or use **/analyze**, **/sandbox**, **/brainstorm**; in **Codex** or **Antigravity** say “ask Gemini to analyze…” or “use Gemini to brainstorm…”; in **VS Code** use Run Task → Ask Gemini. See **Analyze and brainstorm** below for example prompts.
+**1. Copy the skill into your project.**  
+Copy the **entire** `.claude` folder into your project. That’s enough for Claude, Cursor, and GitHub Copilot.
 
-See **.claude/skills/omega-gemini-cli/references/copy-and-run.md** and references (codex, antigravity, vscode, gemini-native) for per-surface details.
+**2. Run setup once.**  
+From the project root, run:
+
+```bash
+node .claude/skills/omega-gemini-cli/scripts/verify-setup.mjs
+```
+
+If you use Claude, you can instead run **/omega-gemini-setup** in the chat. Install Node and the Gemini CLI if the script tells you to; then run `gemini` in a terminal once to sign in.
+
+**3. Use it.**  
+- **In Claude:** Say “ask Gemini to analyze this” or use **/analyze**, **/brainstorm**, or **/sandbox**.  
+- **From a terminal:**  
+  `node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "Your prompt"`  
+  See **Analyze and brainstorm** below for example prompts.
+
+**Using Codex, Antigravity, or VS Code?** Copy the matching folder too: **.agents** (Codex), **.agent** (Antigravity), **.vscode** (VS Code tasks). Details: [copy-and-run.md](.claude/skills/omega-gemini-cli/references/copy-and-run.md).
 
 ## Analyze and brainstorm
 
