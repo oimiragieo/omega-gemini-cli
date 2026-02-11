@@ -4,14 +4,16 @@ You get a **portable skill** so **Claude**, **Codex**, **Cursor**, **Copilot**, 
 
 ## What this is
 
-- **.claude/skills/omega-gemini-cli/** – Skill and headless scripts (`ask-gemini.mjs`, `verify-setup.mjs`), plus docs for installation, auth, headless, codex, antigravity, vscode, gemini-native, copy-and-run. No MCP.
-- **.claude/commands/** – Slash commands in Claude: /analyze, /sandbox, /brainstorm, /omega-gemini, /omega-gemini-setup.
-- **.agents/skills/omega-gemini-cli/** – Same headless workflow for **Codex CLI** (OpenAI).
-- **.agent/skills/omega-gemini-cli/** – Same headless workflow for **Antigravity IDE** (Google).
-- **.gemini/skills/omega-feedback-test/** – **Gemini CLI (native)**: feedback and test suggestions when you ask inside Gemini CLI.
-- **.cursor/rules/** – Extra rules so **Cursor** uses the headless script when you say “ask Gemini”.
-- **.vscode/tasks.json** – **VS Code** tasks: Ask Gemini, Verify setup.
-- **references/copilot-cli.md** – **GitHub Copilot CLI** headless usage (`copilot -p "..."`, `COPILOT_MODEL`, PowerShell).
+| Path | Purpose |
+|------|---------|
+| **.claude/skills/omega-gemini-cli/** | Skill and headless scripts (`ask-gemini.mjs`, `verify-setup.mjs`), plus docs for installation, auth, headless, codex, antigravity, vscode, gemini-native, copy-and-run. No MCP. |
+| **.claude/commands/** | Slash commands in Claude: /analyze, /sandbox, /brainstorm, /omega-gemini, /omega-gemini-setup. |
+| **.agents/skills/omega-gemini-cli/** | Same headless workflow for **Codex CLI** (OpenAI). |
+| **.agent/skills/omega-gemini-cli/** | Same headless workflow for **Antigravity IDE** (Google). |
+| **.gemini/skills/omega-feedback-test/** | **Gemini CLI (native)**: feedback and test suggestions when you ask inside Gemini CLI. |
+| **.cursor/rules/** | Extra rules so **Cursor** uses the headless script when you say “ask Gemini”. |
+| **.vscode/tasks.json** | **VS Code** tasks: Ask Gemini, Verify setup. |
+| **references/copilot-cli.md** | **GitHub Copilot CLI** headless usage (`copilot -p "..."`, `COPILOT_MODEL`, PowerShell). |
 
 Everything runs with **Node** and the **Gemini CLI** (e.g. `gemini -p "..."`). No extra npm deps; no build step.
 
