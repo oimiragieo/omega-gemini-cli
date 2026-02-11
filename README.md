@@ -22,14 +22,14 @@ Everything runs with **Node** and the **Gemini CLI** (e.g. `gemini -p "..."`). N
 **1. Copy the skill into your project.**  
 Copy the **entire** `.claude` folder into your project. **This folder is required.** The scripts (`ask-gemini.mjs`, `verify-setup.mjs`) and skill instructions live here. The `.agents`, `.agent`, `.cursor`, and `.vscode` folders only point their agents at this skill; if you copy one of those without `.claude`, it won't work. Copying `.claude` alone is enough for Claude, Cursor, and GitHub Copilot.
 
-**2. Run setup once.**  
-From the project root, run:
+**2. Run setup once (only if needed).**  
+You need **Node** to run the scripts either way; install it if you don't have it. Run the setup step only if you don't have the **Gemini CLI** installed yet or haven't signed in. From the project root:
 
 ```bash
 node .claude/skills/omega-gemini-cli/scripts/verify-setup.mjs
 ```
 
-If you use Claude, run **/omega-gemini-setup** in the chat instead. When the script asks, install Node and the Gemini CLI; then run `gemini` in a terminal once to sign in.
+If you use Claude, run **/omega-gemini-setup** in the chat instead. When the script asks, install the Gemini CLI and run `gemini` in a terminal once to sign in.
 
 **3. Use it.**
 
