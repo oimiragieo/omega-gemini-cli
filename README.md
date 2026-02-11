@@ -55,7 +55,17 @@ Use for idea generation. Include the challenge and, if you like, a method (e.g. 
 node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "Brainstorm 3 short ideas for improving a CLI tool's first-run experience. One sentence each." --model gemini-2.5-flash
 ```
 
-Add `--sandbox` to run or test code in Gemini’s sandbox; add `--json` for machine-readable output. See [references/headless.md](.claude/skills/omega-gemini-cli/references/headless.md).
+### Sandbox
+
+Use **`--sandbox`** to run or test code in Gemini’s sandbox. Use **/sandbox** in Claude or “run in Gemini sandbox” in Codex/Copilot.
+
+**Example (tested):**
+
+```bash
+node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "Run a simple Python one-liner in the sandbox: print('Hello from sandbox')" --sandbox --model gemini-2.5-flash
+```
+
+Add `--json` for machine-readable output. See [references/headless.md](.claude/skills/omega-gemini-cli/references/headless.md).
 
 ## Headless CLI verification
 
