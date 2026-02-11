@@ -1,6 +1,6 @@
 # Omega Gemini CLI (portable skill for Claude, Codex, Cursor, Gemini CLI, Antigravity, VS Code)
 
-A **portable skill** that lets **Claude** and **Codex CLI** use the **Gemini CLI in headless mode**—no MCP server or MCP configuration. Copy `.claude` (and optionally `.agents` and `.cursor`) into any project; run setup once; then “ask Gemini” from either agent.
+A **portable skill** that lets **Claude**, **Codex**, **Cursor**, **Copilot**, and others use the **Gemini CLI in headless mode**—no MCP server or MCP configuration. **The `.claude` folder is required:** it contains the scripts and skill that run Gemini. The other folders (`.agents`, `.agent`, `.cursor`, `.vscode`) only tell each agent to use that skill; they do not work by themselves. Always copy `.claude` first; then optionally copy the folder for your agent.
 
 ## What this is
 
@@ -18,7 +18,7 @@ All logic runs via **Node + Gemini CLI** (e.g. `gemini -p "..."`). No npm depend
 ## Quick start (in a new project)
 
 **1. Copy the skill into your project.**  
-Copy the **entire** `.claude` folder into your project. That’s enough for Claude, Cursor, and GitHub Copilot.
+Copy the **entire** `.claude` folder into your project. **This folder is required**—the scripts (`ask-gemini.mjs`, `verify-setup.mjs`) and skill instructions live here. The `.agents`, `.agent`, `.cursor`, and `.vscode` folders only point their respective agents at this skill; copying only one of those without `.claude` will not work. That’s enough for Claude, Cursor, and GitHub Copilot.
 
 **2. Run setup once.**  
 From the project root, run:
@@ -35,7 +35,7 @@ If you use Claude, you can instead run **/omega-gemini-setup** in the chat. Inst
   `node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "Your prompt"`  
   See **Analyze and brainstorm** below for example prompts.
 
-**Using Codex, Antigravity, or VS Code?** Copy the matching folder too: **.agents** (Codex), **.agent** (Antigravity), **.vscode** (VS Code tasks). Details: [copy-and-run.md](.claude/skills/omega-gemini-cli/references/copy-and-run.md).
+**Using Codex, Antigravity, or VS Code?** You still need **.claude** (step 1). Then copy the matching folder as well: **.agents** (Codex), **.agent** (Antigravity), **.vscode** (VS Code tasks). Details: [copy-and-run.md](.claude/skills/omega-gemini-cli/references/copy-and-run.md).
 
 ## Analyze and brainstorm
 
@@ -99,14 +99,14 @@ From the project root you can run each agent’s CLI in headless (non-interactiv
 
 ## Repository contents
 
-| Path             | Purpose                                                               |
-| ---------------- | --------------------------------------------------------------------- |
-| `.claude/`       | Skill, commands, and headless scripts (Claude; required for scripts). |
-| `.agents/`       | Codex CLI skill (same scripts).                                       |
-| `.agent/`        | Antigravity IDE skill (same scripts).                                 |
-| `.gemini/`       | Gemini CLI native skill: feedback & test workflow.                    |
-| `.cursor/rules/` | Optional rules for Cursor IDE.                                        |
-| `.vscode/`       | Optional VS Code tasks (Ask Gemini, Verify setup).                    |
+| Path             | Purpose                                                                                      |
+| ---------------- | -------------------------------------------------------------------------------------------- |
+| `.claude/`       | **Required.** Skill, commands, and headless scripts. All other agent folders depend on this. |
+| `.agents/`       | Optional. Codex CLI skill; tells Codex to use the scripts in `.claude/`.                     |
+| `.agent/`        | Optional. Antigravity IDE skill; tells Antigravity to use the scripts in `.claude/`.        |
+| `.gemini/`       | Optional. Gemini CLI native skill: feedback & test workflow.                                 |
+| `.cursor/rules/` | Optional. Cursor IDE rules; Cursor also reads `.claude/skills/`.                             |
+| `.vscode/`       | Optional. VS Code tasks (Ask Gemini, Verify setup); run script from `.claude/`.               |
 | `README.md`      | This file.                                                            |
 | `CHANGELOG.md`   | Version history.                                                      |
 | `LICENSE`        | License terms.                                                        |
