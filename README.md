@@ -21,9 +21,41 @@ All logic runs via **Node + Gemini CLI** (e.g. `gemini -p "..."`). No npm depend
 2. For **Codex** copy **.agents**; for **Antigravity** copy **.agent**; for **Gemini CLI** feedback/test copy **.gemini**; for **VS Code** tasks copy **.vscode**; optionally copy **.cursor/rules/** into your project’s `.cursor/rules/`.
 3. Open that project in Claude (or run `codex` from the project root) and run **/omega-gemini-setup** in Claude, or run `node .claude/skills/omega-gemini-cli/scripts/verify-setup.mjs` from the project root.
 4. Install **Node** and **Gemini CLI** if prompted; complete one-time auth (`gemini` in a terminal).
-5. In **Claude** say “ask gemini for feedback” or use /analyze, /sandbox, /brainstorm; in **Codex** or **Antigravity** say "ask Gemini"; in **Gemini CLI** ask for "feedback" or "test suggestions"; in **VS Code** use Run Task → Ask Gemini.
+5. In **Claude** say “ask gemini for feedback” or use **/analyze**, **/sandbox**, **/brainstorm**; in **Codex** or **Antigravity** say “ask Gemini to analyze…” or “use Gemini to brainstorm…”; in **VS Code** use Run Task → Ask Gemini. See **Analyze and brainstorm** below for example prompts.
 
 See **.claude/skills/omega-gemini-cli/references/copy-and-run.md** and references (codex, antigravity, vscode, gemini-native) for per-surface details.
+
+## Analyze and brainstorm
+
+From the **project root**, run the headless script with a prompt. Use **/analyze** or **/brainstorm** in Claude, or say “ask Gemini to analyze…” / “use Gemini to brainstorm…” in Codex or Copilot.
+
+**Script (all surfaces):**
+
+```bash
+node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "PROMPT" [--model gemini-2.5-flash]
+```
+
+### Analyze
+
+Use for code or doc review, summaries, and Q&A. Optionally reference files in the prompt (e.g. “Summarize README.md” or “Review the scripts in .claude/skills/…”).
+
+**Example (tested):**
+
+```bash
+node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "List the main purpose of this project and its top-level folders in 3 short bullet points." --model gemini-2.5-flash
+```
+
+### Brainstorm
+
+Use for idea generation. Include the challenge and, if you like, a method (e.g. SCAMPER, design thinking) or domain.
+
+**Example (tested):**
+
+```bash
+node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "Brainstorm 3 short ideas for improving a CLI tool's first-run experience. One sentence each." --model gemini-2.5-flash
+```
+
+Add `--sandbox` to run or test code in Gemini’s sandbox; add `--json` for machine-readable output. See [references/headless.md](.claude/skills/omega-gemini-cli/references/headless.md).
 
 ## Headless CLI verification
 
