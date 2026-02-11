@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- **README**: "What this is" is now a table (Path | Purpose). Writing guide applied (voice, tone, punctuation). Quick start clarifies that setup is only needed when Gemini CLI isn't installed or you haven't signed in; Node is required either way. Sandbox and Analyze/Brainstorm sections with tested examples. Headless table documents Claude `--dangerously-skip-permissions`, script usage, and Copilot/Codex/Cursor. Repository contents table; `.claude` required for all agents.
+- **CI**: Tests included in repo so `npm test` passes; Prettier format for README.
+
 ## 2.0.0 — Portable headless skill (no MCP)
 
 - **Headless-only**: Replaced MCP server with a portable `.claude` skill that runs the Gemini CLI in headless mode via scripts. No MCP server or MCP configuration required.
