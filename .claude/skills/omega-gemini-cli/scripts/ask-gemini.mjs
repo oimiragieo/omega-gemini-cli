@@ -7,6 +7,7 @@
  */
 import { spawn } from 'child_process';
 import { createInterface } from 'readline';
+import { escapeForWindowsCmd } from './shell-escape.mjs';
 
 const args = process.argv.slice(2);
 let prompt = '';
@@ -39,8 +40,23 @@ function run(promptText) {
   if (outputJson) cliArgs.push('--output-format', 'json');
   cliArgs.push('--yolo'); // non-interactive / auto-approve for headless
 
-  // Use argument array only (no shell string) so the prompt is passed as a single argv to gemini.
-  const runOptions = { stdio: ['pipe', 'pipe', 'pipe'], env: process.env, shell: false };
+  const isWin = process.platform === 'win32';
+  const runOptions = {
+    stdio: ['pipe', 'pipe', 'pipe'],
+    env: process.env,
+  };
+
+  // On Windows with shell: true, Node joins args with spaces so the prompt gets split and gemini
+  // sees multiple args and shows help. Build a single quoted command so the prompt stays one argument.
+  // Escaping uses "" for " (cmd.exe) to prevent injection; shell: true so gemini.cmd is resolved.
+  let executable = 'gemini';
+  let execArgs = cliArgs;
+  if (isWin) {
+    runOptions.shell = true;
+    const escaped = escapeForWindowsCmd(promptText.trim());
+    executable = `gemini -p "${escaped}" --yolo${model ? ` -m ${model}` : ''}${sandbox ? ' -s' : ''}${outputJson ? ' --output-format json' : ''}`;
+    execArgs = [];
+  }
 
   function onClose(stdout, stderr, code) {
     if (code !== 0) {
@@ -71,8 +87,8 @@ function run(promptText) {
     }
   }
 
-  function runProc(executable, execArgs) {
-    const proc = spawn(executable, execArgs, runOptions);
+  function runProc(exe, args) {
+    const proc = spawn(exe, args, runOptions);
     let stdout = '';
     let stderr = '';
     proc.stdout.setEncoding('utf8');
@@ -85,7 +101,7 @@ function run(promptText) {
     });
     proc.on('close', (code) => onClose(stdout, stderr, code));
     proc.on('error', (err) => {
-      if (err.code === 'ENOENT' && executable === 'gemini') {
+      if (err.code === 'ENOENT' && exe === 'gemini' && !isWin) {
         runProc('npx', ['-y', '@google/gemini-cli', ...cliArgs]);
       } else {
         console.error('Failed to run gemini:', err.message);
@@ -97,7 +113,7 @@ function run(promptText) {
     });
   }
 
-  runProc('gemini', cliArgs);
+  runProc(executable, execArgs);
 }
 
 if (prompt) {

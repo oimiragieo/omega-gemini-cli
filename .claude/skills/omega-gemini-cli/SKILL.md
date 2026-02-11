@@ -68,7 +68,7 @@ Natural language: "use gemini to explain index.html", "ask gemini for feedback o
 
 ## Models (2026)
 
-Prefer **Gemini 3 Pro** or **Gemini 3 Flash** where available; **Gemini 2.5 Pro** and **Gemini 2.5 Flash** remain valid. Use `--model gemini-2.5-flash` to reduce quota issues. See [references/models-2026.md](references/models-2026.md).
+Gemini CLI model IDs: **gemini-3-pro-preview**, **gemini-3-flash-preview**, **gemini-2.5-pro**, **gemini-2.5-flash**, **gemini-2.5-flash-lite**. Use `--model gemini-2.5-flash` (or `gemini-2.5-flash-lite`) to reduce quota/latency. See [references/models-2026.md](references/models-2026.md).
 
 ## Auth
 

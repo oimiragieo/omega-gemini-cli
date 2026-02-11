@@ -16,14 +16,19 @@ Current references for the Google Gemini CLI and API as of 2026. Use these when 
 
 ## Model names (2026)
 
-Prefer **Gemini 3** where available:
+### Available in Gemini CLI
 
-- **Gemini 3 Pro** — Complex reasoning, 1M input / 64k output, thinking mode.
-- **Gemini 3 Flash** — Faster, frontier-class, same context.
+Use these with `--model` / `-m` in the headless script (e.g. `--model gemini-2.5-flash`):
 
-**Gemini 2.5** remains valid:
+| #   | Model ID                 |
+| --- | ------------------------ |
+| 1   | `gemini-3-pro-preview`   |
+| 2   | `gemini-3-flash-preview` |
+| 3   | `gemini-2.5-pro`         |
+| 4   | `gemini-2.5-flash`       |
+| 5   | `gemini-2.5-flash-lite`  |
 
-- **Gemini 2.5 Pro** — Default in many flows; may hit quota (fallback to Flash).
-- **Gemini 2.5 Flash** — Lower latency, quota fallback option.
+- **Gemini 3** (preview) — Pro for complex reasoning; Flash for speed. Same large context.
+- **Gemini 2.5** — Pro and Flash are stable; use **gemini-2.5-flash** or **gemini-2.5-flash-lite** to reduce quota/latency.
 
-Some Gemini 2.0 Flash variants are deprecated (e.g. March 2026 shutdown); use 2.5 or 3 where possible.
+Run `gemini` (or the CLI’s model selector) to confirm current list.

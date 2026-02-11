@@ -6,12 +6,12 @@ Omega-gemini-cli uses **scripts/ask-gemini.mjs** to run the Gemini CLI in headle
 
 Invokes `gemini -p "..."` with optional flags and returns stdout (or `.response` when using `--json`).
 
-| Option                 | Description                            | Example                           |
-| ---------------------- | -------------------------------------- | --------------------------------- |
-| **Prompt**             | First positional arg or stdin          | `"Review this code for security"` |
-| **--model** / **-m**   | Model name                             | `--model gemini-2.5-flash`        |
-| **--sandbox** / **-s** | Sandbox mode (if CLI supports it)      | `--sandbox`                       |
-| **--json**             | Output JSON; script prints `.response` | `--json`                          |
+| Option                 | Description                                              | Example                           |
+| ---------------------- | -------------------------------------------------------- | --------------------------------- |
+| **Prompt**             | First positional arg or stdin                            | `"Review this code for security"` |
+| **--model** / **-m**   | Model name (e.g. gemini-2.5-flash, gemini-3-pro-preview) | `--model gemini-2.5-flash`        |
+| **--sandbox** / **-s** | Sandbox mode (if CLI supports it)                        | `--sandbox`                       |
+| **--json**             | Output JSON; script prints `.response`                   | `--json`                          |
 
 The script adds `--yolo` (auto-approve) for non-interactive runs.
 
