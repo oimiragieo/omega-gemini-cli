@@ -29,8 +29,9 @@ node .claude/skills/omega-gemini-cli/scripts/verify-setup.mjs
 
 If you use Claude, you can instead run **/omega-gemini-setup** in the chat. Install Node and the Gemini CLI if the script tells you to; then run `gemini` in a terminal once to sign in.
 
-**3. Use it.**  
-- **In Claude:** Say “ask Gemini to analyze this” or use **/analyze**, **/brainstorm**, or **/sandbox**.  
+**3. Use it.**
+
+- **In Claude:** Say “ask Gemini to analyze this” or use **/analyze**, **/brainstorm**, or **/sandbox**.
 - **From a terminal:**  
   `node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "Your prompt"`  
   See **Analyze and brainstorm** below for example prompts.
@@ -83,14 +84,14 @@ Add `--json` for machine-readable output. See [references/headless.md](.claude/s
 
 From the project root you can run each agent’s CLI in headless (non-interactive) mode with a single prompt. Commands below assume the relevant CLI is on your PATH.
 
-| Agent                     | Headless command                      | Notes                                                                                                                                                                                                                                                                               |
-| ------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Gemini**                | `gemini -p "PROMPT" --yolo` or script | Use the script for Windows-safe quoting: `node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "PROMPT"`.                                                                                                                                                                    |
-| **Claude Code**           | `claude -p "PROMPT" --dangerously-skip-permissions` | Headless/non-interactive; use `--dangerously-skip-permissions` like `--yolo` for Gemini so the run doesn’t block on permission prompts. Returns response to stdout.                                                                                                                   |
-| **Codex**                 | `codex exec "PROMPT"`                 | Non-interactive; can be slow when using tools (e.g. web search).                                                                                                                                                                                                                    |
-| **Cursor**                | `cursor-agent -p "PROMPT"`            | Cursor CLI in WSL (install: `curl https://cursor.com/install -fsS \| bash`). Use `-p` for headless. From Windows: `wsl bash -lc "cursor-agent -p 'PROMPT'"`.                                                                                                                        |
-| **GitHub Copilot**        | `copilot -p "PROMPT"`                 | Install: `npm install -g @github/copilot`. Set `COPILOT_MODEL` for backend (e.g. `claude-sonnet-4.5`, `gpt-5`, `gemini-2.5-pro`). PowerShell: `$env:COPILOT_MODEL="…"; copilot -p "…"`. See [references/copilot-cli.md](.claude/skills/omega-gemini-cli/references/copilot-cli.md). |
-| **Antigravity / VS Code** | —                                     | No standalone headless CLI in PATH; use the IDE or Run Task/terminal.                                                                                                                                                                                                               |
+| Agent                     | Headless command                                    | Notes                                                                                                                                                                                                                                                                               |
+| ------------------------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Gemini**                | `gemini -p "PROMPT" --yolo` or script               | Use the script for Windows-safe quoting: `node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "PROMPT"`.                                                                                                                                                                    |
+| **Claude Code**           | `claude -p "PROMPT" --dangerously-skip-permissions` | Headless/non-interactive; use `--dangerously-skip-permissions` like `--yolo` for Gemini so the run doesn’t block on permission prompts. Returns response to stdout.                                                                                                                 |
+| **Codex**                 | `codex exec "PROMPT"`                               | Non-interactive; can be slow when using tools (e.g. web search).                                                                                                                                                                                                                    |
+| **Cursor**                | `cursor-agent -p "PROMPT"`                          | Cursor CLI in WSL (install: `curl https://cursor.com/install -fsS \| bash`). Use `-p` for headless. From Windows: `wsl bash -lc "cursor-agent -p 'PROMPT'"`.                                                                                                                        |
+| **GitHub Copilot**        | `copilot -p "PROMPT"`                               | Install: `npm install -g @github/copilot`. Set `COPILOT_MODEL` for backend (e.g. `claude-sonnet-4.5`, `gpt-5`, `gemini-2.5-pro`). PowerShell: `$env:COPILOT_MODEL="…"; copilot -p "…"`. See [references/copilot-cli.md](.claude/skills/omega-gemini-cli/references/copilot-cli.md). |
+| **Antigravity / VS Code** | —                                                   | No standalone headless CLI in PATH; use the IDE or Run Task/terminal.                                                                                                                                                                                                               |
 
 ## Requirements
 
@@ -103,13 +104,13 @@ From the project root you can run each agent’s CLI in headless (non-interactiv
 | ---------------- | -------------------------------------------------------------------------------------------- |
 | `.claude/`       | **Required.** Skill, commands, and headless scripts. All other agent folders depend on this. |
 | `.agents/`       | Optional. Codex CLI skill; tells Codex to use the scripts in `.claude/`.                     |
-| `.agent/`        | Optional. Antigravity IDE skill; tells Antigravity to use the scripts in `.claude/`.        |
+| `.agent/`        | Optional. Antigravity IDE skill; tells Antigravity to use the scripts in `.claude/`.         |
 | `.gemini/`       | Optional. Gemini CLI native skill: feedback & test workflow.                                 |
 | `.cursor/rules/` | Optional. Cursor IDE rules; Cursor also reads `.claude/skills/`.                             |
-| `.vscode/`       | Optional. VS Code tasks (Ask Gemini, Verify setup); run script from `.claude/`.               |
-| `README.md`      | This file.                                                            |
-| `CHANGELOG.md`   | Version history.                                                      |
-| `LICENSE`        | License terms.                                                        |
+| `.vscode/`       | Optional. VS Code tasks (Ask Gemini, Verify setup); run script from `.claude/`.              |
+| `README.md`      | This file.                                                                                   |
+| `CHANGELOG.md`   | Version history.                                                                             |
+| `LICENSE`        | License terms.                                                                               |
 
 No MCP server. The skill has no npm dependencies; a **package.json** exists for development (lint, format, tests). Scripts live under `.claude/skills/omega-gemini-cli/scripts/` and are shared by Claude, Codex, Copilot, and Antigravity. **Tests:** `npm test` (Node 18+). **CI:** GitHub Actions runs tests and lint on push/PR.
 
