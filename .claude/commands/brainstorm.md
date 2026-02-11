@@ -1,6 +1,6 @@
 ---
 description: Brainstorm ideas with Gemini via omega-gemini-cli headless script
-argument-hint: [challenge or question] [methodology] [domain]
+argument-hint: '[challenge or question] [methodology] [domain]'
 allowed-tools: Bash, Read
 ---
 

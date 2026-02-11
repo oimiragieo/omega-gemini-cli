@@ -1,6 +1,6 @@
 ---
 description: Use Google Gemini via omega-gemini-cli headless script (analysis, sandbox, brainstorm)
-argument-hint: [request or question]
+argument-hint: '[request or question]'
 allowed-tools: Bash, Read
 ---
 

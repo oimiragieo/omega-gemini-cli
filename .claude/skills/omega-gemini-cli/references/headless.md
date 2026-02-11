@@ -26,6 +26,8 @@ From the project root (where `.claude` lives):
 node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "What is machine learning?"
 ```
 
+The script runs `gemini` if it’s on your PATH; if not (e.g. you only have `npx @google/gemini-cli`), it automatically falls back to `npx -y @google/gemini-cli` so a global install isn’t required.
+
 Options:
 
 - `--model MODEL` or `-m MODEL` — e.g. `gemini-2.5-flash`

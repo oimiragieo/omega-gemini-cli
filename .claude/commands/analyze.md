@@ -1,6 +1,6 @@
 ---
 description: Analyze files or ask Gemini using omega-gemini-cli headless script
-argument-hint: [prompt or @file ...]
+argument-hint: '[prompt or @file ...]'
 allowed-tools: Bash, Read
 ---
 

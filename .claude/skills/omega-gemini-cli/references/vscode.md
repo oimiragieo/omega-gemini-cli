@@ -2,28 +2,31 @@
 
 VS Code (with **GitHub Copilot**) and the **Gemini CLI Companion** both support the omega-gemini-cli workflow. This page covers Agent Skills discovery, then Companion, Run Task, and terminal.
 
-## Agent Skills (GitHub Copilot in VS Code)
+## Agent Skills (GitHub Copilot)
 
-**Agent Skills** is an open standard ([agentskills.io](https://agentskills.io)) that VS Code uses for project and personal skills. Copilot discovers skills from:
+**Agent Skills** enhance Copilot coding agent, the **GitHub Copilot CLI**, and agent mode in **Visual Studio Code Insiders**. Support in the stable version of VS Code is coming soon. Skills are an open standard ([agentskills.io](https://agentskills.io)); official docs: [About Agent Skills — GitHub Docs](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills#creating-and-adding-skills).
 
-| Location              | Scope   | Notes                                |
-| --------------------- | ------- | ------------------------------------ |
-| **`.github/skills/`** | Project | Recommended by VS Code docs          |
-| **`.claude/skills/`** | Project | Legacy path; **this repo uses this** |
-| `~/.copilot/skills/`  | User    | Recommended for personal skills      |
-| `~/.claude/skills/`   | User    | Legacy for personal skills           |
+**Where Copilot discovers skills:**
 
-This repo stores the skill at **`.claude/skills/omega-gemini-cli/`**, so **VS Code (Copilot) discovers it automatically** with no extra setup. You do not need to copy it to `.github/skills/` unless you prefer the recommended path (if you do, copy the folder and keep scripts under `.claude/` or adjust paths in the skill).
+| Location              | Scope   | Notes                                                              |
+| --------------------- | ------- | ------------------------------------------------------------------ |
+| **`.github/skills/`** | Project | Recommended by GitHub; repo-specific                               |
+| **`.claude/skills/`** | Project | Also supported; **this repo uses this**                            |
+| `~/.copilot/skills/`  | User    | Personal skills, shared across projects (Copilot agent & CLI only) |
+| `~/.claude/skills/`   | User    | Personal skills (Copilot agent & CLI only)                         |
 
-### Skill format alignment
+This repo stores the skill at **`.claude/skills/omega-gemini-cli/`**, so **Copilot discovers it automatically** with no extra setup. You can instead use `.github/skills/omega-gemini-cli/` if you prefer the recommended path (keep scripts under `.claude/` or update paths in the skill).
 
-The skill follows VS Code’s expected format:
+### Skill format (SKILL.md)
 
-- **SKILL.md** with YAML frontmatter: **name** (required, lowercase, hyphens, max 64 chars) and **description** (required, max 1024 chars). Our `name` is `omega-gemini-cli`; the description states what the skill does and when to use it.
-- **Body**: Instructions, when to use, step-by-step procedures, and references to scripts. Scripts are referenced from the skill root, e.g. [scripts/ask-gemini.mjs](./scripts/ask-gemini.mjs); from the project root, run `node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "PROMPT"`.
-- **Progressive disclosure**: Copilot loads name/description first, then the SKILL.md body when relevant, then other files in the skill as needed.
+Per [GitHub’s Creating and adding skills](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills#creating-and-adding-skills):
 
-To add more search paths (e.g. a shared folder), use the **`chat.agentSkillsLocations`** setting in VS Code. The same skill format works with GitHub Copilot in VS Code, Copilot CLI, and the Copilot coding agent (open standard at [agentskills.io](https://agentskills.io)).
+- **SKILL.md** (required filename) with YAML frontmatter: **name** (required, lowercase, hyphens), **description** (required — when Copilot should use it), **license** (optional).
+- **Body**: Instructions, examples, and guidelines. Copilot injects the file into context when it chooses the skill based on your prompt and the description.
+
+This skill’s `name` is `omega-gemini-cli`; the description triggers on “use Gemini”, “analyze with Gemini”, etc. Scripts live in the skill directory; from the project root run `node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "PROMPT"`.
+
+To add more search paths in VS Code, use **`chat.agentSkillsLocations`**. For **Copilot CLI** headless usage (`copilot -p "..."`, `COPILOT_MODEL`), see [copilot-cli.md](copilot-cli.md).
 
 ## 1. Gemini CLI Companion (extension)
 

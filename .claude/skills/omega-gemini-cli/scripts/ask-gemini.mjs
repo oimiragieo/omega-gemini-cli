@@ -39,44 +39,65 @@ function run(promptText) {
   if (outputJson) cliArgs.push('--output-format', 'json');
   cliArgs.push('--yolo'); // non-interactive / auto-approve for headless
 
-  const proc = spawn('gemini', cliArgs, {
-    stdio: ['pipe', 'pipe', 'pipe'],
-    shell: process.platform === 'win32',
-    env: process.env,
-  });
+  // Use argument array only (no shell string) so the prompt is passed as a single argv to gemini.
+  const runOptions = { stdio: ['pipe', 'pipe', 'pipe'], env: process.env, shell: false };
 
-  let stdout = '';
-  let stderr = '';
-  proc.stdout.setEncoding('utf8');
-  proc.stderr.setEncoding('utf8');
-  proc.stdout.on('data', (chunk) => {
-    stdout += chunk;
-  });
-  proc.stderr.on('data', (chunk) => {
-    stderr += chunk;
-  });
-
-  proc.on('close', (code) => {
+  function onClose(stdout, stderr, code) {
     if (code !== 0) {
       console.error(stderr || stdout);
+      const hint =
+        (stderr || stdout).toLowerCase().includes('not found') ||
+        (stderr || stdout).toLowerCase().includes('command not found')
+          ? '\nHint: Is the Gemini CLI installed and authenticated? Run: node .claude/skills/omega-gemini-cli/scripts/verify-setup.mjs'
+          : '';
+      if (hint) console.error(hint);
       process.exit(code ?? 1);
     }
     if (outputJson) {
       try {
         const data = JSON.parse(stdout);
         process.stdout.write(data.response ?? stdout);
-      } catch {
+      } catch (e) {
+        process.stderr.write(
+          'Warning: Gemini did not return valid JSON; raw output below. (' +
+            (e && e.message ? e.message : 'parse error') +
+            ')\n'
+        );
         process.stdout.write(stdout);
+        process.exit(1);
       }
     } else {
       process.stdout.write(stdout);
     }
-  });
+  }
 
-  proc.on('error', (err) => {
-    console.error('Failed to run gemini:', err.message);
-    process.exit(1);
-  });
+  function runProc(executable, execArgs) {
+    const proc = spawn(executable, execArgs, runOptions);
+    let stdout = '';
+    let stderr = '';
+    proc.stdout.setEncoding('utf8');
+    proc.stderr.setEncoding('utf8');
+    proc.stdout.on('data', (chunk) => {
+      stdout += chunk;
+    });
+    proc.stderr.on('data', (chunk) => {
+      stderr += chunk;
+    });
+    proc.on('close', (code) => onClose(stdout, stderr, code));
+    proc.on('error', (err) => {
+      if (err.code === 'ENOENT' && executable === 'gemini') {
+        runProc('npx', ['-y', '@google/gemini-cli', ...cliArgs]);
+      } else {
+        console.error('Failed to run gemini:', err.message);
+        console.error(
+          'Hint: Is the Gemini CLI installed? Run: node .claude/skills/omega-gemini-cli/scripts/verify-setup.mjs'
+        );
+        process.exit(1);
+      }
+    });
+  }
+
+  runProc('gemini', cliArgs);
 }
 
 if (prompt) {

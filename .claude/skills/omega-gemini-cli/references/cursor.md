@@ -23,6 +23,30 @@ The skill follows Cursor’s expected format:
 - **Optional**: `scripts/`, `references/`, `assets/` (we use `scripts/` and `references/`).
 - **Script reference**: From the skill root, the headless script is at `scripts/ask-gemini.mjs`. From the project root, run: `node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "PROMPT"`.
 
+## Headless CLI (print mode)
+
+The **Cursor CLI** installs a **`cursor-agent`** binary in WSL (or Linux/macOS). Install with:
+
+```bash
+curl https://cursor.com/install -fsS | bash
+```
+
+For **headless** (non-interactive) use, always pass **`-p`** or **`--print`**:
+
+```bash
+cursor-agent -p "your prompt"
+```
+
+**From Windows (required):** `cursor-agent` is only on PATH in WSL. When assisting a Windows user (e.g. from Claude or Codex on Windows), **always** invoke the Cursor headless CLI via WSL—otherwise the command will not run:
+
+```bash
+wsl bash -lc "cursor-agent -p 'what is 5 + 5?'"
+```
+
+Use single quotes around the prompt inside the double-quoted string. Do not suggest `cursor-agent -p "..."` from a Windows shell without the `wsl bash -lc "..."` wrapper. **Untrusted prompts:** If the prompt may contain single quotes or user-controlled input, use an env var or temp file instead of inline quoting to avoid injection (e.g. `set CURSOR_PROMPT=...` then `wsl bash -lc "cursor-agent -p \"$CURSOR_PROMPT\""` or pass via file).
+
+Without `-p`, the agent may open an interactive UI window. Add `--force` to allow file modifications. See [Cursor headless docs](https://cursor.com/docs/cli/headless).
+
 ## How to use in Cursor
 
 1. **Automatic**: When you ask for Gemini (e.g. “ask Gemini to review this”), the agent can apply the **omega-gemini-cli** skill and run the headless script.

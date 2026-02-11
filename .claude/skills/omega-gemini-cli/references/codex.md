@@ -17,6 +17,7 @@ Omega-gemini-cli is available as a **Codex Agent Skill**, so you can "ask Gemini
    ```bash
    codex
    ```
+   For **non-interactive (headless)** runs: `codex exec "your prompt"`. Prompts that use tools (e.g. web search) can take longer; allow a higher timeout if needed.
 2. When you want Gemini’s help, say e.g. "ask Gemini to review this file" or "use Gemini to brainstorm ideas". Codex will match the **omega-gemini-cli** skill and run the headless script.
 3. You can also invoke the skill explicitly: type **$** or use **/skills** and choose **omega-gemini-cli**.
 

@@ -22,6 +22,16 @@ node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "PROMPT"
 
 Optional: add `--model gemini-2.5-flash`, `--sandbox`, or `--json`. Build the prompt from the user's request and any @ file refs. Return the script's stdout as Gemini's response.
 
+## Cursor CLI from Windows
+
+If the user asks to run the **Cursor headless CLI** (`cursor-agent`) and the environment is Windows, the binary is only on PATH in WSL. Use:
+
+```bash
+wsl bash -lc "cursor-agent -p 'PROMPT'"
+```
+
+Do not suggest `cursor-agent -p "..."` alone from a Windows shell.
+
 ## If Gemini CLI is not set up
 
 If the script fails (e.g. "gemini not found"), suggest the user run **/omega-gemini-setup** and complete Node + Gemini CLI install and one-time auth. See .claude/skills/omega-gemini-cli/references/installation.md and references/auth.md.

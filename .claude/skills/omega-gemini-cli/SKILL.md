@@ -45,7 +45,17 @@ When the user says "ask gemini for feedback" (or similar), build the prompt from
 - **Sandbox** — Run or test code via Gemini (use `--sandbox` in the script when supported).
 - **Brainstorming** — Build a prompt that includes the challenge and optional methodology (e.g. "Brainstorm 5 ideas using SCAMPER: ...") and run the script.
 
-For full headless options and examples, see [references/headless.md](references/headless.md). For features the old MCP had that are not in headless (change mode, chunking, structured brainstorm), see [references/mcp-vs-headless.md](references/mcp-vs-headless.md). For copying this skill into another project, see [references/copy-and-run.md](references/copy-and-run.md). Other surfaces: [Cursor](references/cursor.md), [Codex CLI](references/codex.md), [Antigravity IDE](references/antigravity.md), [VS Code](references/vscode.md), [Gemini CLI (native feedback/test)](references/gemini-native.md).
+For full headless options and examples, see [references/headless.md](references/headless.md). For features the old MCP had that are not in headless (change mode, chunking, structured brainstorm), see [references/mcp-vs-headless.md](references/mcp-vs-headless.md). For copying this skill into another project, see [references/copy-and-run.md](references/copy-and-run.md). Other surfaces: [Cursor](references/cursor.md), [Codex CLI](references/codex.md), [GitHub Copilot CLI](references/copilot-cli.md), [Antigravity IDE](references/antigravity.md), [VS Code](references/vscode.md), [Gemini CLI (native feedback/test)](references/gemini-native.md).
+
+## Cursor CLI from Windows
+
+If the user is on **Windows** and wants to run the **Cursor headless CLI** (`cursor-agent`), the binary is only on PATH inside WSL. Always use this form so the command works from Windows Claude (or any Windows terminal):
+
+```bash
+wsl bash -lc "cursor-agent -p 'USER_PROMPT'"
+```
+
+Use single quotes around the prompt inside the double-quoted string to avoid escaping issues. Do not suggest `cursor-agent -p "..."` alone on Windows—it will not run unless the user is already inside a WSL shell.
 
 ## Slash commands
 

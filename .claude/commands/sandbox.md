@@ -1,6 +1,6 @@
 ---
 description: Run code or scripts safely in Gemini sandbox via omega-gemini-cli headless script
-argument-hint: [prompt or @file ...]
+argument-hint: '[prompt or @file ...]'
 allowed-tools: Bash, Read
 ---
 
