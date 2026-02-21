@@ -114,7 +114,24 @@ From the project root you can run each agent’s CLI in headless (non-interactiv
 | `CHANGELOG.md`   | Version history.                                                                             |
 | `LICENSE`        | License terms.                                                                               |
 
-No MCP server. The skill doesn't depend on any npm packages; a **package.json** exists for development (lint, format, tests). Scripts live under `.claude/skills/omega-gemini-cli/scripts/` and are shared by Claude, Codex, Copilot, and Antigravity. **Tests:** `npm test` (Node 18+). **CI:** GitHub Actions runs tests and lint on push/PR.
+No MCP server. The skill doesn't depend on any npm packages; a **package.json** exists for development (lint, format, tests). Scripts live under `.claude/skills/omega-gemini-cli/scripts/` and are shared by Claude, Codex, Copilot, and Antigravity. **Tests:** `npm test` (Node 18+). **CI:** GitHub Actions runs tests, lint, format check, and changelog policy checks on push/PR across Node 18/20/22.
+
+## Test matrix
+
+`npm test` currently covers:
+
+- Unit tests for argument parsing and JSON output normalization (`tests/ask-gemini.test.mjs`).
+- Integration tests for `ask-gemini.mjs` process behavior with a stubbed Gemini CLI (`tests/ask-gemini.integration.test.mjs`).
+
+## References maintenance
+
+- Governance for reference docs lives in `.claude/skills/omega-gemini-cli/references/README.md`.
+- If scripts or command behavior changes, update the affected reference files in the same PR.
+
+## Changelog policy
+
+- Every PR must add at least one bullet under `## [Unreleased]` in `CHANGELOG.md`.
+- CI enforces this policy with `npm run changelog:check`.
 
 ## Resources (Agent Skills docs)
 

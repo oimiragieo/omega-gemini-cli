@@ -9,13 +9,17 @@ on:
 jobs:
   test-and-lint:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18, 20, 22]
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
       - name: Install dependencies
@@ -29,3 +33,6 @@ jobs:
 
       - name: Format check
         run: npm run format:check
+
+      - name: Changelog policy check
+        run: npm run changelog:check

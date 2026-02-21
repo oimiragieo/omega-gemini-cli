@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+- **Tests**: Added `tests/ask-gemini.integration.test.mjs` to verify end-to-end `ask-gemini.mjs` behavior with a stub Gemini CLI (flag forwarding, stdin prompt handling, JSON envelope behavior, and non-zero exit propagation).
+- **CI**: Expanded GitHub Actions to run on Node 18/20/22 and enforce changelog policy checks on every push/PR.
+- **Tooling**: Updated `npm test` to run all `tests/*.test.mjs`; added `test:ci` and `changelog:check` scripts.
+- **Docs**: Added `.claude/skills/omega-gemini-cli/references/README.md` with ownership/source-of-truth/freshness policy for reference docs.
+- **Process**: Added `.github/pull_request_template.md` requiring docs/changelog updates and core quality checks.
+
+- **Code Cleanup**: Removed `shell-escape.mjs` and `tests/shell-escape.test.mjs`, which were identified as dead code.
+- **Documentation**: Added clarifying comment to `ask-gemini.mjs` explaining the security rationale for Windows command construction.
 - **Bug fix**: Prompt truncation — unquoted multi-word prompts (e.g. `node ask-gemini.mjs What is 2 plus 2`) now capture the full prompt instead of only the first word.
 - **Bug fix**: Arg parsing now uses `node:util parseArgs` — flags may appear before or after the prompt in any order; `--model` as the last arg no longer crashes.
 - **Bug fix**: `--json` output is now a consistent `{"response":"..."}` envelope on both success and error (previously success returned plain text).
