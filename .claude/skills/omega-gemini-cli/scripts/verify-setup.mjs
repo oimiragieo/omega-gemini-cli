@@ -25,7 +25,7 @@ function getGeminiVersion(how) {
       stdio: ['pipe', 'pipe', 'pipe'],
       timeout: 10000,
     });
-    const match = (out || '').trim().match(/^(\d+)\.(\d+)/);
+    const match = (out || '').trim().match(/(\d+)\.(\d+)/);
     if (match)
       return {
         major: parseInt(match[1], 10),

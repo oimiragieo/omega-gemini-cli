@@ -9,7 +9,7 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "node --test tests/shell-escape.test.mjs"
+    "test": "node --test tests/shell-escape.test.mjs tests/ask-gemini.test.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",

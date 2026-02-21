@@ -7,6 +7,15 @@ description: Use when the user wants to use Google Gemini for analysis, large fi
 
 This skill follows the [Agent Skills](https://agentskills.io) open standard. Codex discovers it from **REPO** scope at `$REPO_ROOT/.agents/skills/`. It runs the **Gemini CLI in headless mode** so Codex can call Gemini from the project—no MCP server or MCP configuration required.
 
+## Response times
+
+Gemini CLI runs as a subprocess and includes model startup time. Typical wall-clock times observed on this setup:
+
+- Simple Q&A / news query: ~2 minutes
+- Codebase or large-file review: ~5–10 minutes
+
+Set expectations with the user before running long tasks.
+
 ## Overview
 
 From the **project root** (the directory that contains `.claude` and `.agents`), run the headless script. It invokes `gemini -p "..."` with optional model, sandbox, and JSON flags and returns the response. Requires **Node.js** and **Google Gemini CLI** to be installed.
@@ -23,9 +32,11 @@ node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "USER_PROMPT"
 
 Optional flags (append to the command):
 
-- `--model gemini-2.5-flash` (or another model) — reduce quota issues.
-- `--sandbox` — sandbox mode for running code.
-- `--json` — output JSON; the script prints the `.response` field.
+- `--model MODEL` / `-m MODEL` — e.g. `gemini-2.5-flash`. Reduce quota issues by using Flash or Flash-lite.
+- `--sandbox` / `-s` — sandbox mode for running code.
+- `--json` — output a JSON object `{"response":"..."}` (consistent envelope on success and error).
+
+Gemini CLI also supports `--output-format stream-json`, `--approval-mode`, `--allowed-tools`, `--resume`, and more. Full reference: `.claude/skills/omega-gemini-cli/references/headless.md`.
 
 Examples:
 

@@ -11,7 +11,7 @@ Invokes `gemini -p "..."` with optional flags and returns stdout (or `.response`
 | **Prompt**             | First positional arg or stdin                            | `"Review this code for security"` |
 | **--model** / **-m**   | Model name (e.g. gemini-2.5-flash, gemini-3-pro-preview) | `--model gemini-2.5-flash`        |
 | **--sandbox** / **-s** | Sandbox mode (if CLI supports it)                        | `--sandbox`                       |
-| **--json**             | Output JSON; script prints `.response`                   | `--json`                          |
+| **--json**             | Output `{"response":"..."}` JSON envelope                | `--json`                          |
 
 The script adds `--yolo` (auto-approve) for non-interactive runs.
 

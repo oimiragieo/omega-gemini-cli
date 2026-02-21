@@ -23,8 +23,9 @@ describe('escapeForWindowsCmd', () => {
     assert.strictEqual(escapeForWindowsCmd('backslash"quote'), 'backslash""quote');
   });
 
-  it('escapes dollar for consistency', () => {
-    assert.strictEqual(escapeForWindowsCmd('$HOME'), '\\$HOME');
+  it('does not escape dollar sign (not special in cmd.exe)', () => {
+    assert.strictEqual(escapeForWindowsCmd('$HOME'), '$HOME');
+    assert.strictEqual(escapeForWindowsCmd('costs $100'), 'costs $100');
   });
 
   it('returns empty string for non-string', () => {
@@ -35,6 +36,20 @@ describe('escapeForWindowsCmd', () => {
   it('leaves safe text unchanged', () => {
     assert.strictEqual(escapeForWindowsCmd('hello world'), 'hello world');
     assert.strictEqual(escapeForWindowsCmd('prompt with spaces'), 'prompt with spaces');
+  });
+
+  it('leaves cmd.exe non-special chars unchanged inside double-quoted strings', () => {
+    // &, |, <, >, (, ) are NOT special inside double-quoted cmd.exe strings — no escaping needed
+    assert.strictEqual(escapeForWindowsCmd('echo 1 & echo 2'), 'echo 1 & echo 2');
+    assert.strictEqual(escapeForWindowsCmd('a | b'), 'a | b');
+    assert.strictEqual(escapeForWindowsCmd('input < file.txt'), 'input < file.txt');
+    assert.strictEqual(escapeForWindowsCmd('output > file.txt'), 'output > file.txt');
+    assert.strictEqual(escapeForWindowsCmd('(grouped)'), '(grouped)');
+  });
+
+  it('leaves whitespace-only string unchanged', () => {
+    assert.strictEqual(escapeForWindowsCmd('   '), '   ');
+    assert.strictEqual(escapeForWindowsCmd('\t\n'), '\t\n');
   });
 
   it('handles mixed special chars', () => {

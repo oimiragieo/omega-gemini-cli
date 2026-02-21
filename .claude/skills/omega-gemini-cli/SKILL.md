@@ -8,6 +8,15 @@ allowed-tools: Read, Grep, Bash
 
 This skill uses the **Gemini CLI in headless mode** so Claude can run Gemini from scripts—no MCP server or MCP configuration required.
 
+## Response times
+
+Gemini CLI runs as a subprocess and includes model startup time. Typical wall-clock times observed on this setup:
+
+- Simple Q&A / news query: ~2 minutes
+- Codebase or large-file review: ~5–10 minutes
+
+Set expectations with the user before running long tasks.
+
 ## Overview
 
 Run Gemini via the headless script: [scripts/ask-gemini.mjs](./scripts/ask-gemini.mjs) (from the skill root) or `.claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs` (from the project root). It invokes `gemini -p "..."` (and optional `-m`, `-s`, `--output-format json`, `--yolo`) and returns the response. Requires **Node.js** and the **Google Gemini CLI** to be installed. For one-time setup after copying this folder, run **/omega-gemini-setup**. For install and auth, see [references/installation.md](references/installation.md) and [references/auth.md](references/auth.md).
@@ -26,9 +35,11 @@ node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "USER_PROMPT"
 
 Options (append to the command):
 
-- `--model gemini-2.5-flash` (or another model) — avoid quota issues by using Flash.
-- `--sandbox` — sandbox mode if the CLI supports it.
-- `--json` — output JSON; the script prints the `.response` field.
+- `--model MODEL` / `-m MODEL` — model to use (e.g. `gemini-2.5-flash`). Avoid quota issues by using Flash or Flash-lite.
+- `--sandbox` / `-s` — sandbox mode.
+- `--json` — output a JSON object `{"response":"..."}` (consistent envelope on success and error).
+
+Gemini CLI also supports `--output-format stream-json`, `--approval-mode`, `--allowed-tools`, `--resume`, and more. See [references/headless.md](references/headless.md) for the full `gemini --help` reference.
 
 Examples:
 
