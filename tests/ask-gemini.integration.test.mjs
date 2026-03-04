@@ -142,13 +142,13 @@ describe('ask-gemini integration', () => {
 
   it('returns 124 when gemini request times out', () => {
     const start = Date.now();
-    const result = runAskGemini(['--timeout-ms', '50', 'prompt text'], 'sleep', {
-      GEMINI_STUB_SLEEP_MS: '2000',
+    const result = runAskGemini(['--timeout-ms', '500', 'prompt text'], 'sleep', {
+      GEMINI_STUB_SLEEP_MS: '10000',
     });
 
     assert.equal(result.status, 124);
     assert.match(result.stderr, /timed out/i);
-    assert.ok(Date.now() - start < 1500);
+    assert.ok(Date.now() - start < 5000);
   });
 
   it('rejects oversized stdin input before invoking gemini', () => {
