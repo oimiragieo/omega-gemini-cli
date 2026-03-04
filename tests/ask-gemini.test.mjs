@@ -1,5 +1,5 @@
 /**
- * Unit tests for ask-gemini arg parsing and JSON output formatting.
+ * Unit tests for ask-gemini.mjs arg parsing, command construction, and JSON output formatting.
  * Extracted pure functions enable testing without spawning processes.
  * Run from repo root: node --test tests/ask-gemini.test.mjs
  *
@@ -7,123 +7,144 @@
  */
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { parseArgs } from '../.claude/skills/omega-gemini-cli/scripts/parse-args.mjs';
+import {
+  assertNonEmptyPrompt,
+  parseCliArgs,
+} from '../.claude/skills/omega-gemini-cli/scripts/parse-args.mjs';
 import { formatJsonOutput } from '../.claude/skills/omega-gemini-cli/scripts/format-output.mjs';
+import {
+  buildGeminiArgs,
+  getExecutables,
+} from '../.claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs';
 
 // ---------------------------------------------------------------------------
-// parseArgs
+// parseCliArgs
 // ---------------------------------------------------------------------------
 
-describe('parseArgs', () => {
-  describe('prompt extraction', () => {
-    it('parseArgs_quotedPrompt_returnsFullPrompt', () => {
-      const result = parseArgs(['What is 2 plus 2']);
-      assert.equal(result.prompt, 'What is 2 plus 2');
-    });
-
-    it('parseArgs_unquotedMultiWordPrompt_joinsAllWords', () => {
-      // Simulates: node ask-gemini.mjs What is the capital of France
-      const result = parseArgs(['What', 'is', 'the', 'capital', 'of', 'France']);
-      assert.equal(result.prompt, 'What is the capital of France');
-    });
-
-    it('parseArgs_flagsAfterPrompt_promptDoesNotIncludeFlags', () => {
-      // Bug fix: flags after prompt were previously swallowed into the prompt string
-      const result = parseArgs(['hello world', '--model', 'gemini-2.5-flash']);
-      assert.equal(result.prompt, 'hello world');
-      assert.equal(result.model, 'gemini-2.5-flash');
-    });
-
-    it('parseArgs_noPrompt_returnsEmptyString', () => {
-      const result = parseArgs(['--model', 'gemini-2.5-flash']);
-      assert.equal(result.prompt, '');
-    });
+describe('parseCliArgs', () => {
+  it('parses prompt and options', () => {
+    const opts = parseCliArgs([
+      'review this',
+      '--model',
+      'gemini-2.5-flash',
+      '--json',
+      '--sandbox',
+    ]);
+    assert.equal(opts.prompt, 'review this');
+    assert.equal(opts.model, 'gemini-2.5-flash');
+    assert.equal(opts.outputJson, true);
+    assert.equal(opts.sandbox, true);
   });
 
-  describe('--model / -m flag', () => {
-    it('parseArgs_longModelFlag_setsModel', () => {
-      const result = parseArgs(['--model', 'gemini-2.5-flash', 'my prompt']);
-      assert.equal(result.model, 'gemini-2.5-flash');
-      assert.equal(result.prompt, 'my prompt');
-    });
-
-    it('parseArgs_shortModelFlag_setsModel', () => {
-      const result = parseArgs(['-m', 'gemini-2.5-pro', 'my prompt']);
-      assert.equal(result.model, 'gemini-2.5-pro');
-    });
-
-    it('parseArgs_modelAsLastArg_doesNotCrash', () => {
-      // Bug fix: --model as final arg had no bounds check
-      const result = parseArgs(['my prompt', '--model']);
-      assert.equal(result.prompt, 'my prompt');
-      assert.equal(result.model, '');
-    });
-
-    it('parseArgs_noModelFlag_returnsEmptyString', () => {
-      const result = parseArgs(['my prompt']);
-      assert.equal(result.model, '');
-    });
+  it('parses timeout and help flags', () => {
+    const opts = parseCliArgs(['--timeout-ms', '5000', '--help']);
+    assert.equal(opts.timeoutMs, 5000);
+    assert.equal(opts.help, true);
   });
 
-  describe('--json flag', () => {
-    it('parseArgs_jsonFlag_setsOutputJson', () => {
-      const result = parseArgs(['--json', 'my prompt']);
-      assert.equal(result.outputJson, true);
-    });
-
-    it('parseArgs_noJsonFlag_outputJsonFalse', () => {
-      const result = parseArgs(['my prompt']);
-      assert.equal(result.outputJson, false);
-    });
+  it('supports prompt after -- sentinel', () => {
+    const opts = parseCliArgs(['--model', 'gemini-2.5-flash', '--', '--not-a-flag', 'value']);
+    assert.equal(opts.model, 'gemini-2.5-flash');
+    assert.equal(opts.prompt, '--not-a-flag value');
   });
 
-  describe('--sandbox / -s flag', () => {
-    it('parseArgs_sandboxFlag_setsSandbox', () => {
-      const result = parseArgs(['--sandbox', 'my prompt']);
-      assert.equal(result.sandbox, true);
-    });
-
-    it('parseArgs_shortSandboxFlag_setsSandbox', () => {
-      const result = parseArgs(['-s', 'my prompt']);
-      assert.equal(result.sandbox, true);
-    });
-
-    it('parseArgs_noSandboxFlag_sandboxFalse', () => {
-      const result = parseArgs(['my prompt']);
-      assert.equal(result.sandbox, false);
-    });
+  it('throws on unknown option', () => {
+    assert.throws(() => parseCliArgs(['--nope']), /Unknown option/);
   });
 
-  describe('prompt edge cases', () => {
-    it('parseArgs_promptWithInternalQuotes_preservesQuotes', () => {
-      const result = parseArgs(['What is "the best" answer?']);
-      assert.equal(result.prompt, 'What is "the best" answer?');
-    });
-
-    it('parseArgs_duplicateModelFlag_usesLastValue', () => {
-      const result = parseArgs(['--model', 'm1', '--model', 'm2', 'my prompt']);
-      assert.equal(result.model, 'm2');
-      assert.equal(result.prompt, 'my prompt');
-    });
+  it('throws on invalid timeout', () => {
+    assert.throws(() => parseCliArgs(['--timeout-ms', '0']), /Invalid value for --timeout-ms/);
   });
 
-  describe('combined flags', () => {
-    it('parseArgs_allFlagsBeforePrompt_parsesCorrectly', () => {
-      const result = parseArgs(['--model', 'gemini-2.5-flash', '--json', '--sandbox', 'run this']);
-      assert.equal(result.model, 'gemini-2.5-flash');
-      assert.equal(result.outputJson, true);
-      assert.equal(result.sandbox, true);
-      assert.equal(result.prompt, 'run this');
-    });
+  it('throws when --model is missing value', () => {
+    assert.throws(() => parseCliArgs(['--model']), /Missing value for --model/);
+  });
 
-    it('parseArgs_allFlagsAfterPrompt_parsesCorrectly', () => {
-      // This was broken before (flags after prompt were absorbed into prompt)
-      const result = parseArgs(['run this', '--model', 'gemini-2.5-flash', '--json', '--sandbox']);
-      assert.equal(result.prompt, 'run this');
-      assert.equal(result.model, 'gemini-2.5-flash');
-      assert.equal(result.outputJson, true);
-      assert.equal(result.sandbox, true);
+  it('supports -m shorthand for --model', () => {
+    const opts = parseCliArgs(['review this', '-m', 'gemini-2.5-flash']);
+    assert.equal(opts.model, 'gemini-2.5-flash');
+    assert.equal(opts.prompt, 'review this');
+  });
+
+  it('supports -s shorthand for --sandbox', () => {
+    const opts = parseCliArgs(['-s', 'run this']);
+    assert.equal(opts.sandbox, true);
+    assert.equal(opts.prompt, 'run this');
+  });
+
+  it('parses flags after prompt correctly', () => {
+    const opts = parseCliArgs(['hello world', '--model', 'gemini-2.5-flash']);
+    assert.equal(opts.prompt, 'hello world');
+    assert.equal(opts.model, 'gemini-2.5-flash');
+  });
+
+  it('returns empty prompt when only flags provided', () => {
+    const opts = parseCliArgs(['--model', 'gemini-2.5-flash']);
+    assert.equal(opts.prompt, '');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// assertNonEmptyPrompt
+// ---------------------------------------------------------------------------
+
+describe('assertNonEmptyPrompt', () => {
+  it('throws for empty prompt', () => {
+    assert.throws(() => assertNonEmptyPrompt('  '), /Prompt is required/);
+  });
+
+  it('accepts non-empty prompt', () => {
+    assert.doesNotThrow(() => assertNonEmptyPrompt('ok'));
+  });
+});
+
+// ---------------------------------------------------------------------------
+// buildGeminiArgs
+// ---------------------------------------------------------------------------
+
+describe('buildGeminiArgs', () => {
+  it('constructs minimal args when only prompt provided', () => {
+    const args = buildGeminiArgs({ prompt: 'hi', model: '', outputJson: false, sandbox: false });
+    assert.deepEqual(args, ['-p', '', '--yolo']);
+  });
+
+  it('constructs required args and optional flags', () => {
+    const args = buildGeminiArgs({
+      prompt: 'analyze file',
+      model: 'gemini-2.5-flash',
+      outputJson: true,
+      sandbox: true,
     });
+    assert.deepEqual(args, [
+      '-p',
+      '',
+      '--yolo',
+      '-s',
+      '-m',
+      'gemini-2.5-flash',
+      '--output-format',
+      'json',
+    ]);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// getExecutables
+// ---------------------------------------------------------------------------
+
+describe('getExecutables', () => {
+  it('returns Windows candidates with shell commands', () => {
+    const candidates = getExecutables(['-p', '', '--yolo'], true, '');
+    assert.equal(candidates.length, 2);
+    assert.ok(candidates[0].executable.startsWith('gemini'));
+    assert.ok(candidates[1].executable.startsWith('npx'));
+    assert.equal(candidates[0].shell, true);
+  });
+
+  it('returns non-Windows candidates', () => {
+    const candidates = getExecutables(['-p', '', '--yolo'], false, '');
+    assert.equal(candidates[0].executable, 'gemini');
+    assert.equal(candidates[1].executable, 'npx');
   });
 });
 
@@ -142,7 +163,6 @@ describe('formatJsonOutput', () => {
     });
 
     it('formatJsonOutput_validJson_outputIsValidJson', () => {
-      // Fix: success must also return JSON (not plain text) when --json is used
       const geminiOutput = JSON.stringify({ response: 'hello' });
       const result = formatJsonOutput(geminiOutput);
       assert.doesNotThrow(() => JSON.parse(result.output));
@@ -167,7 +187,6 @@ describe('formatJsonOutput', () => {
     });
 
     it('formatJsonOutput_nonStringResponse_passesValueThrough', () => {
-      // response: 123 is valid JSON — value passes through as-is
       const result = formatJsonOutput(JSON.stringify({ response: 123 }));
       assert.equal(result.exitCode, 0);
       const parsed = JSON.parse(result.output);
@@ -185,7 +204,6 @@ describe('formatJsonOutput', () => {
     });
 
     it('formatJsonOutput_invalidJson_outputIsValidJson', () => {
-      // Fix: error case must also return valid JSON (consistent with success case)
       const result = formatJsonOutput('broken { json');
       assert.doesNotThrow(() => JSON.parse(result.output));
     });
