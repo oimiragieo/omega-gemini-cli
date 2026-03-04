@@ -77,6 +77,7 @@ function runCandidate(candidate, runOptions, timeoutMs, promptText) {
     try {
       const spawnOpts = { ...runOptions };
       if (candidate.shell) spawnOpts.shell = true;
+      if (process.platform !== 'win32') spawnOpts.detached = true;
       // Gemini receives prompt via stdin, so stdio[0] must be 'pipe'.
       spawnOpts.stdio = ['pipe', 'pipe', 'pipe'];
       proc = spawn(candidate.executable, candidate.args, spawnOpts);
@@ -132,7 +133,11 @@ function runCandidate(candidate, runOptions, timeoutMs, promptText) {
             killer.on('close', () => done());
           });
         } else {
-          proc.kill('SIGKILL');
+          try {
+            process.kill(-proc.pid, 'SIGKILL');
+          } catch {
+            proc.kill('SIGKILL');
+          }
         }
       }, timeoutMs);
     }
