@@ -30,7 +30,7 @@ The script runs `gemini` if it’s on your PATH; if not (e.g. you only have `npx
 
 Options:
 
-- `--model MODEL` or `-m MODEL` — e.g. `gemini-2.5-flash`, `gemini-3-flash-preview`. Full list: [models-2026.md](models-2026.md)
+- `--model MODEL` or `-m MODEL` — e.g. `gemini-2.5-flash`, `gemini-3.1-pro`. Full list: [models-2026.md](models-2026.md)
 - `--json` — output a JSON object `{"response":"..."}` (consistent envelope on success and error)
 - `--sandbox` or `-s` — sandbox mode if supported by your CLI
 

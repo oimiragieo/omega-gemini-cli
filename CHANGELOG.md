@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- **Models**: Added `gemini-3.1-pro` and `gemini-3.1-flash-lite` (March 2026). Added deprecation notice for `gemini-3-pro-preview` (shutdown March 9, 2026, replaced by `gemini-3.1-pro`). Updated model references across README, SKILL.md, Cursor rules, headless.md, tools.md, and models-2026.md.
 - **Tests**: Added `tests/ask-gemini.integration.test.mjs` to verify end-to-end `ask-gemini.mjs` behavior with a stub Gemini CLI (flag forwarding, stdin prompt handling, JSON envelope behavior, and non-zero exit propagation).
 - **CI**: Expanded GitHub Actions to run on Node 18/20/22 and enforce changelog policy checks on every push/PR.
 - **Tooling**: Updated `npm test` to run all `tests/*.test.mjs`; added `test:ci` and `changelog:check` scripts.

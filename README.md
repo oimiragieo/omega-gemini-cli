@@ -28,7 +28,7 @@ A zero-dependency Node.js wrapper that lets any agent platform invoke **Google G
 - **Headless execution** — runs `gemini -p "…" --yolo` non-interactively with prompts sent safely via stdin
 - **Cross-platform** — Windows (`shell: true` with injection-safe model validation) and Unix/macOS (array-based spawn) handled automatically
 - **Automatic fallback** — tries global `gemini` binary, falls back to `npx -y @google/gemini-cli` if not found
-- **Model selection** — Gemini 2.5 Flash (recommended for quota efficiency), Pro, and latest preview models
+- **Model selection** — Gemini 3.1 Pro, 3.1 Flash Lite, 2.5 Flash (recommended for quota efficiency), Pro, and more
 - **JSON output** — `{"response":"…"}` envelope for automation pipelines
 - **Sandbox mode** — runs code in Gemini's sandboxed execution environment
 - **Stdin-first prompts** — prompts are always passed via stdin (never command-line args) to avoid ARG_MAX limits and shell injection
@@ -143,11 +143,14 @@ The `PROMPT` argument is required unless you are piping input from stdin. Flags 
 
 | Model ID                 | Description                | Use case                           |
 | ------------------------ | -------------------------- | ---------------------------------- |
+| `gemini-3.1-pro`         | Latest flagship            | Complex analysis and reasoning     |
+| `gemini-3.1-flash-lite`  | New lightweight (Mar 2026) | High-volume, low-latency tasks     |
 | `gemini-2.5-flash`       | Fast, quota-efficient      | Recommended default for most tasks |
-| `gemini-2.5-pro`         | Stable, high-quality       | Complex analysis and reasoning     |
+| `gemini-2.5-pro`         | Stable, high-quality       | Deep analysis and reasoning        |
 | `gemini-2.5-flash-lite`  | Minimal quota, fastest     | High-volume automation             |
-| `gemini-3-pro-preview`   | Latest, advanced reasoning | Cutting-edge tasks                 |
-| `gemini-3-flash-preview` | Latest, fast               | Latest features with speed         |
+| `gemini-3-flash-preview` | Preview, fast              | Latest features with speed         |
+
+> **Deprecation notice:** `gemini-3-pro-preview` shuts down **March 9, 2026**. Use `gemini-3.1-pro` instead.
 
 Omit `--model` to let Gemini CLI use its own default selection.
 
@@ -412,10 +415,10 @@ node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
   "Perform a deep security audit of this authentication module" \
   --model gemini-2.5-pro
 
-# Latest preview
+# Latest flagship
 node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
   "Explain this advanced algorithm" \
-  --model gemini-3-pro-preview
+  --model gemini-3.1-pro
 ```
 
 ### JSON output for automation

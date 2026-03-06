@@ -79,7 +79,7 @@ Natural language: "use gemini to explain index.html", "ask gemini for feedback o
 
 ## Models (2026)
 
-Gemini CLI model IDs: **gemini-3-pro-preview**, **gemini-3-flash-preview**, **gemini-2.5-pro**, **gemini-2.5-flash**, **gemini-2.5-flash-lite**. Use `--model gemini-2.5-flash` (or `gemini-2.5-flash-lite`) to reduce quota/latency. See [references/models-2026.md](references/models-2026.md).
+Gemini CLI model IDs: **gemini-3.1-pro**, **gemini-3.1-flash-lite**, **gemini-3-flash-preview**, **gemini-2.5-pro**, **gemini-2.5-flash**, **gemini-2.5-flash-lite**. Use `--model gemini-2.5-flash` (or `gemini-2.5-flash-lite`) to reduce quota/latency. **Note:** `gemini-3-pro-preview` is deprecated (shutdown March 9, 2026) -- use `gemini-3.1-pro` instead. See [references/models-2026.md](references/models-2026.md).
 
 ## Auth
 

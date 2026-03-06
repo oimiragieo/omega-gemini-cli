@@ -9,7 +9,7 @@ Invokes `gemini -p "..."` with optional flags and returns stdout (or `.response`
 | Option                 | Description                                              | Example                           |
 | ---------------------- | -------------------------------------------------------- | --------------------------------- |
 | **Prompt**             | First positional arg or stdin                            | `"Review this code for security"` |
-| **--model** / **-m**   | Model name (e.g. gemini-2.5-flash, gemini-3-pro-preview) | `--model gemini-2.5-flash`        |
+| **--model** / **-m**   | Model name (e.g. gemini-2.5-flash, gemini-3.1-pro)       | `--model gemini-2.5-flash`        |
 | **--sandbox** / **-s** | Sandbox mode (if CLI supports it)                        | `--sandbox`                       |
 | **--json**             | Output `{"response":"..."}` JSON envelope                | `--json`                          |
 
