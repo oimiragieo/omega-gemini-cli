@@ -5,6 +5,7 @@
  *   node ask-gemini.mjs "your prompt" [--model MODEL] [--json] [--sandbox] [--timeout-ms N]
  *   echo "prompt" | node ask-gemini.mjs [--model MODEL] [--json] [--sandbox] [--timeout-ms N]
  * Prompt is always sent via stdin to bypass shell argument length limits on all platforms.
+ * Passes --yolo and --skip-trust for non-interactive runs in untrusted workspaces.
  * Windows: shell: true is required to resolve the gemini.cmd wrapper.
  */
 import { spawn } from 'child_process';
@@ -29,7 +30,8 @@ export function buildGeminiArgs({ prompt: _prompt, model, outputJson, sandbox })
   // Gemini uses stdin for the prompt. -p "" keeps Gemini in headless mode;
   // it appends the -p value to stdin, so "" + stdin = stdin.
   // On non-Windows we pass a proper args array — no shell quoting issues.
-  const cliArgs = ['-p', '', '--yolo'];
+  // --skip-trust prevents untrusted-folder override of --yolo in headless/CI runs.
+  const cliArgs = ['-p', '', '--yolo', '--skip-trust'];
   if (sandbox) cliArgs.push('-s');
   if (model) cliArgs.push('-m', model);
   if (outputJson) cliArgs.push('--output-format', 'json');
@@ -46,14 +48,14 @@ export function getExecutables(cliArgs, isWin, model) {
     const jsonFlag = cliArgs.includes('--output-format') ? ' --output-format json' : '';
     return [
       {
-        executable: `gemini -p "" --yolo${modelFlag}${sandboxFlag}${jsonFlag}`,
+        executable: `gemini -p "" --yolo --skip-trust${modelFlag}${sandboxFlag}${jsonFlag}`,
         args: [],
         shell: true,
         notFoundPattern: /not recognized as an internal or external command/i,
         stdinPrompt: true,
       },
       {
-        executable: `npx -y @google/gemini-cli -p "" --yolo${modelFlag}${sandboxFlag}${jsonFlag}`,
+        executable: `npx -y @google/gemini-cli -p "" --yolo --skip-trust${modelFlag}${sandboxFlag}${jsonFlag}`,
         args: [],
         shell: true,
         notFoundPattern: /not recognized as an internal or external command/i,

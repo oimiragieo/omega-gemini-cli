@@ -32,16 +32,16 @@ node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "USER_PROMPT"
 
 Optional flags (append to the command):
 
-- `--model MODEL` / `-m MODEL` — e.g. `gemini-2.5-flash`. Reduce quota issues by using Flash or Flash-lite.
+- `--model MODEL` / `-m MODEL` — e.g. `gemini-3.5-flash`, `gemini-3.1-flash-lite`. Reduce quota issues by using Flash-lite.
 - `--sandbox` / `-s` — sandbox mode for running code.
 - `--json` — output a JSON object `{"response":"..."}` (consistent envelope on success and error).
 
-Gemini CLI also supports `--output-format stream-json`, `--approval-mode`, `--allowed-tools`, `--resume`, and more. Full reference: `.claude/skills/omega-gemini-cli/references/headless.md`.
+Gemini CLI also supports `--output-format stream-json`, `--approval-mode`, `--resume`, and more. Full reference: `.claude/skills/omega-gemini-cli/references/headless.md`.
 
 Examples:
 
 - Analysis: `node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "Review @src/main.js for bugs"`
-- With model: `node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "Summarize this" --model gemini-2.5-flash`
+- With model: `node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "Summarize this" --model gemini-3.5-flash`
 - Stdin: `echo "Explain recursion" | node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs`
 
 1. Build the prompt from the user’s request and any @ file refs. 2. Run the command above from the project root. 3. Return the script’s stdout to the user as Gemini’s response.
@@ -62,6 +62,10 @@ node .claude/skills/omega-gemini-cli/scripts/verify-setup.mjs
 ```
 
 Full installation and auth details live in the Claude skill at `.claude/skills/omega-gemini-cli/references/installation.md` and `references/auth.md` (same repo).
+
+## Models (2026)
+
+Gemini CLI model IDs: **gemini-3.5-flash**, **gemini-3.1-pro-preview**, **gemini-3.1-flash-lite**, **gemini-3-flash-preview**, **gemini-2.5-pro**, **gemini-2.5-flash**, **gemini-2.5-flash-lite**. Use `--model gemini-3.5-flash` (or `gemini-3.1-flash-lite`) for most tasks. **Note:** `gemini-3-pro-preview` shut down March 9, 2026 — use `gemini-3.1-pro-preview` instead. See `.claude/skills/omega-gemini-cli/references/models-2026.md`.
 
 ## Shared scripts
 

@@ -28,7 +28,7 @@ A zero-dependency Node.js wrapper that lets any agent platform invoke **Google G
 - **Headless execution** — runs `gemini -p "…" --yolo` non-interactively with prompts sent safely via stdin
 - **Cross-platform** — Windows (`shell: true` with injection-safe model validation) and Unix/macOS (array-based spawn) handled automatically
 - **Automatic fallback** — tries global `gemini` binary, falls back to `npx -y @google/gemini-cli` if not found
-- **Model selection** — Gemini 3.1 Pro, 3.1 Flash Lite, 2.5 Flash (recommended for quota efficiency), Pro, and more
+- **Model selection** — Gemini 3.5 Flash (recommended), 3.1 Pro Preview, 3.1 Flash Lite, and 2.5 series
 - **JSON output** — `{"response":"…"}` envelope for automation pipelines
 - **Sandbox mode** — runs code in Gemini's sandboxed execution environment
 - **Stdin-first prompts** — prompts are always passed via stdin (never command-line args) to avoid ARG_MAX limits and shell injection
@@ -107,7 +107,7 @@ node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "Review src/index.js
 # Generate ideas with a faster model
 node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
   "Brainstorm 5 ways to improve CLI onboarding" \
-  --model gemini-2.5-flash
+  --model gemini-3.5-flash
 
 # Run code in Gemini's sandbox
 node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
@@ -141,16 +141,19 @@ The `PROMPT` argument is required unless you are piping input from stdin. Flags 
 
 ### Model notes
 
-| Model ID                 | Description                | Use case                           |
-| ------------------------ | -------------------------- | ---------------------------------- |
-| `gemini-3.1-pro`         | Latest flagship            | Complex analysis and reasoning     |
-| `gemini-3.1-flash-lite`  | New lightweight (Mar 2026) | High-volume, low-latency tasks     |
-| `gemini-2.5-flash`       | Fast, quota-efficient      | Recommended default for most tasks |
-| `gemini-2.5-pro`         | Stable, high-quality       | Deep analysis and reasoning        |
-| `gemini-2.5-flash-lite`  | Minimal quota, fastest     | High-volume automation             |
-| `gemini-3-flash-preview` | Preview, fast              | Latest features with speed         |
+| Model ID                 | Description                  | Use case                                 |
+| ------------------------ | ---------------------------- | ---------------------------------------- |
+| `gemini-3.5-flash`       | Stable flagship flash        | Recommended default for most tasks       |
+| `gemini-3.1-pro-preview` | Preview flagship             | Complex analysis and reasoning           |
+| `gemini-3.1-flash-lite`  | Stable lightweight           | High-volume, low-latency / quota savings |
+| `gemini-2.5-pro`         | Stable (retiring ≥ Oct 2026) | Deep analysis                            |
+| `gemini-2.5-flash`       | Stable (retiring ≥ Oct 2026) | Legacy fast default                      |
+| `gemini-2.5-flash-lite`  | Stable (retiring ≥ Oct 2026) | Legacy high-volume automation            |
+| `gemini-3-flash-preview` | Preview (legacy)             | Migrate to `gemini-3.5-flash`            |
 
-> **Deprecation notice:** `gemini-3-pro-preview` shuts down **March 9, 2026**. Use `gemini-3.1-pro` instead.
+> **Shut down:** `gemini-3-pro-preview` was retired **March 9, 2026**. Use `gemini-3.1-pro-preview` instead.
+>
+> **Retiring:** Gemini 2.5 models retire no earlier than **October 16, 2026**. Migrate to `gemini-3.5-flash` / `gemini-3.1-flash-lite` / `gemini-3.1-pro-preview`. See [models-2026.md](.claude/skills/omega-gemini-cli/references/models-2026.md).
 
 Omit `--model` to let Gemini CLI use its own default selection.
 
@@ -178,10 +181,10 @@ node ask-gemini.mjs -- --this-is-not-a-flag but-it-is-the-prompt
 The wrapper runs the following under the hood:
 
 ```bash
-gemini -p "" --yolo
+gemini -p "" --yolo --skip-trust
 # (prompt is sent via stdin)
 # With optional additions:
-#   -m gemini-2.5-flash
+#   -m gemini-3.5-flash
 #   -s
 #   --output-format json
 ```
@@ -204,6 +207,8 @@ gemini -p "" --yolo
 | Variable                     | Default            | Description                                                                                                                                   |
 | ---------------------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | `ASK_GEMINI_MAX_STDIN_BYTES` | `52428800` (50 MB) | Maximum bytes accepted from stdin. Prompts exceeding this limit are rejected with exit code `1`.                                              |
+| `GEMINI_API_KEY`             | —                  | API key for headless/CI auth (alternative to interactive `gemini` login).                                                                     |
+| `GEMINI_CLI_TRUST_WORKSPACE` | —                  | Set to `"true"` to trust the workspace (the script also passes `--skip-trust`).                                                               |
 | `COPILOT_MODEL`              | —                  | **GitHub Copilot CLI only.** Selects the backend AI model when running `copilot -p "…"`. Examples: `"gemini-2.5-pro"`, `"claude-sonnet-4.5"`. |
 
 ### Gemini CLI debug logging
@@ -358,7 +363,7 @@ node .claude/skills/omega-gemini-cli/scripts/verify-setup.mjs
 # Summarize a project
 node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
   "List the main purpose of this project and its top-level folders in 3 short bullet points." \
-  --model gemini-2.5-flash
+  --model gemini-3.5-flash
 
 # Review a specific file
 node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
@@ -376,7 +381,7 @@ node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
 # General brainstorm
 node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
   "Brainstorm 3 short ideas for improving a CLI tool's first-run experience. One sentence each." \
-  --model gemini-2.5-flash
+  --model gemini-3.5-flash
 
 # With a methodology
 node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
@@ -394,7 +399,7 @@ node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
 node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
   "Run this Python one-liner in the sandbox: print('Hello from Gemini sandbox')" \
   --sandbox \
-  --model gemini-2.5-flash
+  --model gemini-3.5-flash
 
 # Generate and execute a script
 node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
@@ -408,7 +413,7 @@ node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
 # Fast, quota-efficient (recommended default)
 node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
   "Quick summary of this diff" \
-  --model gemini-2.5-flash
+  --model gemini-3.5-flash
 
 # High-quality for complex tasks
 node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
@@ -418,7 +423,7 @@ node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
 # Latest flagship
 node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
   "Explain this advanced algorithm" \
-  --model gemini-3.1-pro
+  --model gemini-3.1-pro-preview
 ```
 
 ### JSON output for automation
@@ -450,7 +455,7 @@ cat README.md | node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
 # Pipe a large file safely (stdin never hits ARG_MAX)
 cat large-schema.sql | node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs \
   "Identify tables without a primary key." \
-  --model gemini-2.5-flash
+  --model gemini-3.5-flash
 ```
 
 ### Timeout for CI/CD
@@ -540,7 +545,7 @@ npm run test:ci
 # Runs: tests + eslint + prettier check + changelog format check
 ```
 
-The GitHub Actions workflow tests on Node.js **20**.
+The GitHub Actions workflow tests on Node.js **18, 20, and 22**.
 
 ### Linting and formatting
 

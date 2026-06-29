@@ -62,7 +62,7 @@ From the workspace root in the VS Code terminal:
 node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "Your prompt here"
 ```
 
-Add `--model gemini-2.5-flash`, `--sandbox`, or `--json` as needed. Requires Node.js and Gemini CLI to be installed (run **/omega-gemini-setup** in Claude or `node .claude/skills/omega-gemini-cli/scripts/verify-setup.mjs`).
+Add `--model gemini-3.5-flash`, `--sandbox`, or `--json` as needed. Requires Node.js and Gemini CLI to be installed (run **/omega-gemini-setup** in Claude or `node .claude/skills/omega-gemini-cli/scripts/verify-setup.mjs`).
 
 ## Summary
 

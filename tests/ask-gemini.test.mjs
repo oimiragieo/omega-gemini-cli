@@ -105,13 +105,13 @@ describe('assertNonEmptyPrompt', () => {
 describe('buildGeminiArgs', () => {
   it('constructs minimal args when only prompt provided', () => {
     const args = buildGeminiArgs({ prompt: 'hi', model: '', outputJson: false, sandbox: false });
-    assert.deepEqual(args, ['-p', '', '--yolo']);
+    assert.deepEqual(args, ['-p', '', '--yolo', '--skip-trust']);
   });
 
   it('constructs required args and optional flags', () => {
     const args = buildGeminiArgs({
       prompt: 'analyze file',
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3.5-flash',
       outputJson: true,
       sandbox: true,
     });
@@ -119,9 +119,10 @@ describe('buildGeminiArgs', () => {
       '-p',
       '',
       '--yolo',
+      '--skip-trust',
       '-s',
       '-m',
-      'gemini-2.5-flash',
+      'gemini-3.5-flash',
       '--output-format',
       'json',
     ]);

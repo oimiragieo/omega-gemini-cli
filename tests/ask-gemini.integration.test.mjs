@@ -87,7 +87,7 @@ describe('ask-gemini integration', () => {
 
     assert.equal(result.status, 0);
     const parsed = JSON.parse(result.stdout);
-    assert.deepEqual(parsed.args, ['-p', '', '--yolo']);
+    assert.deepEqual(parsed.args, ['-p', '', '--yolo', '--skip-trust']);
     assert.equal(parsed.stdin, 'hello world');
   });
 
@@ -136,7 +136,7 @@ describe('ask-gemini integration', () => {
 
     assert.equal(result.status, 0);
     const parsed = JSON.parse(result.stdout);
-    assert.deepEqual(parsed.args, ['-p', '', '--yolo']);
+    assert.deepEqual(parsed.args, ['-p', '', '--yolo', '--skip-trust']);
     assert.equal(parsed.stdin, 'prompt from stdin');
   });
 

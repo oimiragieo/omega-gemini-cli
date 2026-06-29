@@ -2,7 +2,13 @@
 
 ## [Unreleased]
 
-- **Models**: Added `gemini-3.1-pro` and `gemini-3.1-flash-lite` (March 2026). Added deprecation notice for `gemini-3-pro-preview` (shutdown March 9, 2026, replaced by `gemini-3.1-pro`). Updated model references across README, SKILL.md, Cursor rules, headless.md, tools.md, and models-2026.md.
+- **Models**: Corrected `gemini-3.1-pro` → `gemini-3.1-pro-preview`; added `gemini-3.5-flash`, `gemini-3.1-pro-preview-customtools`, and CLI aliases. Updated deprecation notices (`gemini-3-pro-preview` shut down March 9, 2026; Gemini 2.5 retiring ≥ Oct 16, 2026). Shifted recommended defaults to `gemini-3.5-flash` / `gemini-3.1-flash-lite`.
+- **Harness**: `ask-gemini.mjs` now passes `--skip-trust` alongside `--yolo` for headless runs in untrusted workspaces.
+- **Docs**: Refreshed `headless.md` for Gemini CLI 0.49 (`--skip-trust`, `--acp`, `--policy`; `--allowed-tools` deprecated). Updated `auth.md` (API key, workspace trust, model access errors). Synced `.agent`/`.agents` SKILL.md model sections.
+- **CI**: Matrix now tests Node 18, 20, and 22.
+- **verify-setup**: Warns when Gemini CLI is older than 0.21 (Gemini 3.x routing).
+
+- **Models**: Added `gemini-3.1-pro-preview` and `gemini-3.1-flash-lite` (March 2026). Added deprecation notice for `gemini-3-pro-preview` (shutdown March 9, 2026, replaced by `gemini-3.1-pro-preview`). Updated model references across README, SKILL.md, Cursor rules, headless.md, tools.md, and models-2026.md.
 - **Tests**: Added `tests/ask-gemini.integration.test.mjs` to verify end-to-end `ask-gemini.mjs` behavior with a stub Gemini CLI (flag forwarding, stdin prompt handling, JSON envelope behavior, and non-zero exit propagation).
 - **CI**: Expanded GitHub Actions to run on Node 18/20/22 and enforce changelog policy checks on every push/PR.
 - **Tooling**: Updated `npm test` to run all `tests/*.test.mjs`; added `test:ci` and `changelog:check` scripts.

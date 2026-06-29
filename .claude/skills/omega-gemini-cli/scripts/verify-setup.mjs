@@ -9,6 +9,7 @@ import { execSync } from 'child_process';
 const MIN_NODE_MAJOR = 18;
 const MIN_GEMINI_MAJOR = 0;
 const MIN_GEMINI_MINOR = 1;
+const RECOMMENDED_GEMINI_MINOR = 21;
 
 function checkNode() {
   const v = process.version.slice(1).split('.')[0];
@@ -43,13 +44,17 @@ function checkGeminiCLI() {
     execSync('gemini -help', { stdio: 'pipe', timeout: 5000 });
     const ver = getGeminiVersion('gemini');
     const versionOk = !ver || (ver.major >= MIN_GEMINI_MAJOR && ver.minor >= MIN_GEMINI_MINOR);
+    const versionRecommended =
+      !ver || (ver.major >= MIN_GEMINI_MAJOR && ver.minor >= RECOMMENDED_GEMINI_MINOR);
     return {
       ok: true,
       how: 'gemini',
       version: ver && ver.raw ? ver.raw : undefined,
-      versionWarning: versionOk
-        ? undefined
-        : `Gemini CLI ${ver?.raw || '?'} may be older than ${MIN_GEMINI_MAJOR}.${MIN_GEMINI_MINOR}; headless script may need a newer version.`,
+      versionWarning: !versionOk
+        ? `Gemini CLI ${ver?.raw || '?'} may be older than ${MIN_GEMINI_MAJOR}.${MIN_GEMINI_MINOR}; headless script may need a newer version.`
+        : !versionRecommended
+          ? `Gemini CLI ${ver?.raw || '?'} is older than ${MIN_GEMINI_MAJOR}.${RECOMMENDED_GEMINI_MINOR}; Gemini 3.x model routing may be unavailable.`
+          : undefined,
     };
   } catch {
     try {

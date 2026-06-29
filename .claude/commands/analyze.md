@@ -11,7 +11,7 @@ Use the **headless Gemini CLI script** to analyze or answer with Gemini. No MCP 
    ```bash
    node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "PROMPT"
    ```
-   Replace `PROMPT` with the full analysis request. Optionally add `--model gemini-2.5-flash` to reduce quota issues.
+   Replace `PROMPT` with the full analysis request. Optionally add `--model gemini-3.5-flash` or `--model gemini-3.1-flash-lite` to reduce quota issues.
 3. Return the script's stdout as Gemini's response to the user.
 
 If no argument was given, ask the user what they want Gemini to analyze or answer.
