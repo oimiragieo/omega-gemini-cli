@@ -111,7 +111,7 @@ describe('buildGeminiArgs', () => {
   it('constructs required args and optional flags', () => {
     const args = buildGeminiArgs({
       prompt: 'analyze file',
-      model: 'gemini-3.5-flash',
+      model: 'gemini-3.7-flash',
       outputJson: true,
       sandbox: true,
     });
@@ -122,7 +122,7 @@ describe('buildGeminiArgs', () => {
       '--skip-trust',
       '-s',
       '-m',
-      'gemini-3.5-flash',
+      'gemini-3.7-flash',
       '--output-format',
       'json',
     ]);

@@ -13,17 +13,19 @@ Omega-gemini-cli uses the **Gemini CLI in headless mode**. No MCP server or MCP 
 1. **Node.js** (v18 or higher; Node 20+ recommended): [nodejs.org](https://nodejs.org).
 2. **Google Gemini CLI** installed and configured: [github.com/google-gemini/gemini-cli](https://github.com/google-gemini/gemini-cli).
 
-Install Gemini CLI:
+Install Gemini CLI (stable **0.55.1+** recommended as of Aug 2026):
 
 ```bash
-npm install -g @google/gemini-cli
+npm install -g @google/gemini-cli@latest
 ```
 
 Or use it via npx (no global install):
 
 ```bash
-npx @google/gemini-cli -p "Your prompt"
+npx -y @google/gemini-cli@latest -p "Your prompt"
 ```
+
+> **Auth:** After June 18, 2026, consumer Google AI Pro/Ultra/free OAuth no longer works on Gemini CLI. Use a paid `GEMINI_API_KEY` or Code Assist Standard/Enterprise — see [auth.md](auth.md).
 
 ## Verify installation
 

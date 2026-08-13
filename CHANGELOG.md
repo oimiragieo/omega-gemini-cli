@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- **Models**: Added `gemini-3.7-flash` (GA — DeepMind model card 13 Aug 2026; 1M context, 64k output) and `gemini-3.6-flash`; added `gemini-3.5-flash-lite`. Recommended default moved `gemini-3.5-flash` → `gemini-3.7-flash`, with 3.6 Flash as the access-denied fallback. Verified via DeepMind Flash page + model card (API `docs/models` index may lag day-of). Updated README, SKILL.md (`.claude`/`.agent`/`.agents`), commands, Cursor rules, auth.md, headless.md, tools.md, vscode.md, and models-2026.md.
+- **CLI**: Refreshed `headless.md` against Gemini CLI **0.55.1** stable (`gemini --help`); noted `--approval-mode=yolo` as the preferred long-term form while the wrapper keeps `--yolo` for compatibility. `verify-setup` now recommends CLI ≥ 0.55.
+- **Auth**: Documented June 18, 2026 consumer → Antigravity CLI transition (API key / Code Assist Standard|Enterprise still supported on Gemini CLI); fixed discussion link to #27274.
+
 - **Models**: Corrected `gemini-3.1-pro` → `gemini-3.1-pro-preview`; added `gemini-3.5-flash`, `gemini-3.1-pro-preview-customtools`, and CLI aliases. Updated deprecation notices (`gemini-3-pro-preview` shut down March 9, 2026; Gemini 2.5 retiring ≥ Oct 16, 2026). Shifted recommended defaults to `gemini-3.5-flash` / `gemini-3.1-flash-lite`.
 - **Harness**: `ask-gemini.mjs` now passes `--skip-trust` alongside `--yolo` for headless runs in untrusted workspaces.
 - **Docs**: Refreshed `headless.md` for Gemini CLI 0.49 (`--skip-trust`, `--acp`, `--policy`; `--allowed-tools` deprecated). Updated `auth.md` (API key, workspace trust, model access errors). Synced `.agent`/`.agents` SKILL.md model sections.

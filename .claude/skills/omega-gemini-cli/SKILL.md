@@ -35,7 +35,7 @@ node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "USER_PROMPT"
 
 Options (append to the command):
 
-- `--model MODEL` / `-m MODEL` — model to use (e.g. `gemini-3.5-flash`, `gemini-3.1-flash-lite`). Use Flash-lite to reduce quota/latency.
+- `--model MODEL` / `-m MODEL` — model to use (e.g. `gemini-3.7-flash`, `gemini-3.1-flash-lite`). Use Flash-lite to reduce quota/latency.
 - `--sandbox` / `-s` — sandbox mode.
 - `--json` — output a JSON object `{"response":"..."}` (consistent envelope on success and error).
 
@@ -44,7 +44,7 @@ Gemini CLI also supports `--output-format stream-json`, `--approval-mode`, `--re
 Examples:
 
 - Analysis: `node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "Review @src/main.js for bugs"`
-- With model: `node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "Summarize this" --model gemini-3.5-flash`
+- With model: `node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "Summarize this" --model gemini-3.7-flash`
 - Stdin: `echo "Explain recursion" | node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs`
 
 When the user says "ask gemini for feedback" (or similar), build the prompt from their request and any @ file refs, then run the script and return the script output to the user.
@@ -79,7 +79,7 @@ Natural language: "use gemini to explain index.html", "ask gemini for feedback o
 
 ## Models (2026)
 
-Gemini CLI model IDs: **gemini-3.5-flash**, **gemini-3.1-pro-preview**, **gemini-3.1-flash-lite**, **gemini-3-flash-preview**, **gemini-2.5-pro**, **gemini-2.5-flash**, **gemini-2.5-flash-lite**. Use `--model gemini-3.5-flash` (or `gemini-3.1-flash-lite`) for most tasks. **Note:** `gemini-3-pro-preview` shut down March 9, 2026 — use `gemini-3.1-pro-preview` instead. See [references/models-2026.md](references/models-2026.md).
+Gemini CLI model IDs: **gemini-3.7-flash** (latest, GA), **gemini-3.6-flash**, **gemini-3.5-flash**, **gemini-3.5-flash-lite**, **gemini-3.1-pro-preview**, **gemini-3.1-flash-lite**, **gemini-3-flash-preview**, **gemini-2.5-pro**, **gemini-2.5-flash**, **gemini-2.5-flash-lite**. Use `--model gemini-3.7-flash` (or `gemini-3.1-flash-lite`) for most tasks. **Note:** `gemini-3-pro-preview` shut down March 9, 2026 — use `gemini-3.1-pro-preview` instead. See [references/models-2026.md](references/models-2026.md).
 
 ## Auth
 

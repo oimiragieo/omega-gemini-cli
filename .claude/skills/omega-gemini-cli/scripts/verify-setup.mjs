@@ -9,7 +9,7 @@ import { execSync } from 'child_process';
 const MIN_NODE_MAJOR = 18;
 const MIN_GEMINI_MAJOR = 0;
 const MIN_GEMINI_MINOR = 1;
-const RECOMMENDED_GEMINI_MINOR = 21;
+const RECOMMENDED_GEMINI_MINOR = 55;
 
 function checkNode() {
   const v = process.version.slice(1).split('.')[0];
@@ -53,7 +53,7 @@ function checkGeminiCLI() {
       versionWarning: !versionOk
         ? `Gemini CLI ${ver?.raw || '?'} may be older than ${MIN_GEMINI_MAJOR}.${MIN_GEMINI_MINOR}; headless script may need a newer version.`
         : !versionRecommended
-          ? `Gemini CLI ${ver?.raw || '?'} is older than ${MIN_GEMINI_MAJOR}.${RECOMMENDED_GEMINI_MINOR}; Gemini 3.x model routing may be unavailable.`
+          ? `Gemini CLI ${ver?.raw || '?'} is older than ${MIN_GEMINI_MAJOR}.${RECOMMENDED_GEMINI_MINOR}; upgrade with npm install -g @google/gemini-cli@latest (stable as of Aug 2026 is 0.55.1).`
           : undefined,
     };
   } catch {

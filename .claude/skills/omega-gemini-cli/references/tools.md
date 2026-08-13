@@ -9,7 +9,7 @@ Invokes `gemini -p "" --yolo --skip-trust` with optional flags and returns stdou
 | Option                 | Description                                       | Example                           |
 | ---------------------- | ------------------------------------------------- | --------------------------------- |
 | **Prompt**             | First positional arg or stdin                     | `"Review this code for security"` |
-| **--model** / **-m**   | Model name (see [models-2026.md](models-2026.md)) | `--model gemini-3.5-flash`        |
+| **--model** / **-m**   | Model name (see [models-2026.md](models-2026.md)) | `--model gemini-3.7-flash`        |
 | **--sandbox** / **-s** | Sandbox mode (if CLI supports it)                 | `--sandbox`                       |
 | **--json**             | Output `{"response":"..."}` JSON envelope         | `--json`                          |
 | **--timeout-ms**       | Abort after N milliseconds (exit 124 on timeout)  | `--timeout-ms 30000`              |

@@ -13,7 +13,7 @@ node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "PROMPT" [--model MO
 ```
 
 - **PROMPT** — Required. The request to send to Gemini; include @ file refs or context as needed.
-- **--model** / **-m** — Optional. e.g. `gemini-3.5-flash` or `gemini-3.1-flash-lite` to reduce quota issues.
+- **--model** / **-m** — Optional. e.g. `gemini-3.7-flash` or `gemini-3.1-flash-lite` to reduce quota issues.
 - **--sandbox** / **-s** — Optional. Sandbox mode for running code.
 - **--json** — Optional. Output a JSON object `{"response":"..."}` (consistent envelope on success and error).
 

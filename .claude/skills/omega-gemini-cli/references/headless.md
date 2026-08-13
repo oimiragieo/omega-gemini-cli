@@ -32,7 +32,7 @@ The script runs `gemini` if it's on your PATH; if not (e.g. you only have `npx @
 
 Options:
 
-- `--model MODEL` or `-m MODEL` — e.g. `gemini-3.5-flash`, `gemini-3.1-flash-lite`. Full list: [models-2026.md](models-2026.md)
+- `--model MODEL` or `-m MODEL` — e.g. `gemini-3.7-flash`, `gemini-3.1-flash-lite`. Full list: [models-2026.md](models-2026.md)
 - `--json` — output a JSON object `{"response":"..."}` (consistent envelope on success and error)
 - `--sandbox` or `-s` — sandbox mode if supported by your CLI
 
@@ -61,7 +61,7 @@ cat README.md | gemini -p "Summarize this documentation" --yolo
 
 ## CLI reference (`gemini --help`)
 
-Full options as of Gemini CLI 0.49 (June 2026):
+Full options as of Gemini CLI **0.55.1** (stable, 11 Aug 2026):
 
 ```
 Usage: gemini [options] [command]
@@ -89,6 +89,7 @@ Options:
       --policy                    Additional policy files or directories to load    [array]
       --admin-policy              Additional admin policy files or directories      [array]
       --acp                       Starts the agent in ACP mode                     [boolean]
+      --experimental-acp          Deprecated alias for --acp                       [boolean]
       --allowed-mcp-server-names  Allowed MCP server names                         [array]
       --allowed-tools             [DEPRECATED] Use Policy Engine instead            [array]
   -e, --extensions                Extensions to use (default: all)                 [array]
@@ -112,15 +113,15 @@ Options:
 | Option            | Short | Description                                       | Example                                 |
 | ----------------- | ----- | ------------------------------------------------- | --------------------------------------- |
 | `--prompt`        | `-p`  | Run headless with this prompt                     | `gemini -p "query" --yolo`              |
-| `--model`         | `-m`  | Model name (see [models-2026.md](models-2026.md)) | `-m gemini-3.5-flash`                   |
-| `--yolo`          | `-y`  | Auto-approve all actions (required for headless)  | `gemini -p "query" --yolo`              |
+| `--model`         | `-m`  | Model name (see [models-2026.md](models-2026.md)) | `-m gemini-3.7-flash`                   |
+| `--yolo`          | `-y`  | Auto-approve all actions (used by ask-gemini.mjs) | `gemini -p "query" --yolo`              |
 | `--skip-trust`    |       | Trust workspace (used by ask-gemini.mjs)          | `gemini -p "query" --yolo --skip-trust` |
 | `--output-format` | `-o`  | `text` (default), `json`, or `stream-json`        | `--output-format json`                  |
 | `--sandbox`       | `-s`  | Sandbox mode                                      | `gemini -p "query" -s --yolo`           |
-| `--approval-mode` |       | `yolo` = auto-approve all; `plan` = read-only     | `--approval-mode yolo`                  |
+| `--approval-mode` |       | Preferable long-term form of YOLO: `yolo`         | `--approval-mode=yolo`                  |
 | `--resume`        | `-r`  | Resume a previous session                         | `--resume latest`                       |
 
-> **Note:** `--allowed-tools` is deprecated in favor of the [Policy Engine](https://geminicli.com/docs/core/policy-engine). Prefer `--policy` for tool restrictions.
+> **Notes:** `--allowed-tools` is deprecated in favor of the [Policy Engine](https://geminicli.com/docs/core/policy-engine). Prefer `--policy` for tool restrictions. Official docs increasingly recommend `--approval-mode=yolo` over `--yolo`; the wrapper keeps `--yolo` for broad CLI compatibility (still accepted in 0.55.1).
 
 ## Examples
 
@@ -133,7 +134,7 @@ cat src/auth.py | gemini -p "Review this for security issues" --yolo > review.tx
 With script and JSON:
 
 ```bash
-node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "List main risks in @src" --model gemini-3.5-flash --json
+node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "List main risks in @src" --model gemini-3.7-flash --json
 ```
 
 Commit message from staged diff:

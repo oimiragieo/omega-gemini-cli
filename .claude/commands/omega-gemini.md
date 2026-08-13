@@ -10,4 +10,4 @@ Use the **omega-gemini-cli** skill and the **headless script** for this request.
 - For **run or test code** safely: run the same script with `--sandbox`: `node .claude/skills/omega-gemini-cli/scripts/ask-gemini.mjs "PROMPT" --sandbox`.
 - For **brainstorm**: run the script with a prompt that states the challenge and optional methodology (e.g. "Brainstorm 5 ideas using design thinking: ...").
 
-Use `--model gemini-3.5-flash` or `--model gemini-3.1-flash-lite` if you want to avoid quota issues. Return the script output as Gemini's response. See `.claude/skills/omega-gemini-cli/SKILL.md` and `references/headless.md` for details.
+Use `--model gemini-3.7-flash` or `--model gemini-3.1-flash-lite` if you want to avoid quota issues. Return the script output as Gemini's response. See `.claude/skills/omega-gemini-cli/SKILL.md` and `references/headless.md` for details.
